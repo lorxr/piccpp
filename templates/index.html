@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sistema de Triagem</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="wrapper">
+      <nav class="sidebar">
+        <h2>Alvormed.AI</h2>
+        <hr />
+        <ul>
+          <li><a href="/">Início</a></li>
+          <li><a href="/nova-triagem">Nova Triagem</a></li>
+        </ul>
+      </nav>
+
+      <main class="main-content">
+        <header class="top-header">
+          <h3>Módulo de Enfermagem</h3>
+        </header>
+
+        <section class="content">
+          {% block conteudo %}
+          <h1>Bem-vindo ao sistema de triagem.</h1>
+          <p>Selecione uma opção no menu lateral para começar.</p>
+          {% endblock %}
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
