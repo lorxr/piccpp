@@ -1,186 +1,290 @@
-{% extends "index.html" %}
+{% extends "index.html" %} {% block conteudo %}
 
-{% block conteudo %}
-<div class="card">
-    <h2>Nova Triagem</h2>
-    <hr>
+<div class="triagem-page">
+  <div class="page-header">
+    <div>
+      <span class="system-badge">Nova Triagem</span>
+      <!-- <h1>Nova Triagem</h1> -->
+      <!-- <p>
+        Registre os dados iniciais do paciente para apoiar a pré-consulta e a
+        classificação do atendimento.
+      </p> -->
+    </div>
 
-    <div class="abas" style="margin-bottom: 25px;">
-        <button type="button" id="btnAbaSinais" class="ativo" onclick="mudarAbaPrincipal('sinais')">1. Sinais Vitais</button>
-        <button type="button" id="btnAbaSintomas" onclick="mudarAbaPrincipal('sintomas')">2. Sintomas e Vínculo</button>
+    <a href="/" class="btn-health-outline"> Voltar ao início </a>
+  </div>
+
+  <div class="triagem-card">
+    <div class="triagem-card-header">
+      <div>
+        <h2>Ficha de atendimento</h2>
+        <p>Preencha as etapas abaixo para concluir a triagem.</p>
+      </div>
+
+      <div class="triagem-status">Em preenchimento</div>
+    </div>
+
+    <div class="step-tabs">
+      <button
+        type="button"
+        id="btnAbaSinais"
+        class="ativo"
+        onclick="mudarAbaPrincipal('sinais')"
+      >
+        <span>1</span>
+        Sinais Vitais
+      </button>
+
+      <button
+        type="button"
+        id="btnAbaSintomas"
+        onclick="mudarAbaPrincipal('sintomas')"
+      >
+        <span>2</span>
+        Sintomas e Vínculo
+      </button>
     </div>
 
     <form action="/triagem" method="POST">
-        
-        <div id="viewSinaisVitais">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div class="form-group">
-                    <label>Temperatura (°C):</label>
-                    <input type="text" name="temperatura" placeholder="Ex: 36.5">
-                </div>
-                <div class="form-group">
-                    <label>Pressão Arterial:</label>
-                    <input type="text" name="pressao" placeholder="Ex: 120/80">
-                </div>
-                <div class="form-group">
-                    <label>Freq. Cardíaca (BPM):</label>
-                    <input type="number" name="frequencia" placeholder="Ex: 80">
-                </div>
-                <div class="form-group">
-                    <label>Glicemia (mg/dL):</label>
-                    <input type="number" name="glicemia" placeholder="Ex: 95">
-                </div>
-            </div>
-            
-            <div class="form-group" style="margin-top: 15px;">
-                <label>Medicamentos de Uso Contínuo:</label>
-                <input type="text" name="medicamentos" placeholder="Ex: Losartana 50mg, Metformina...">
-            </div>
+      <div id="viewSinaisVitais" class="triagem-section">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="temperatura">Temperatura (°C)</label>
+            <input type="text" id="temperatura" name="temperatura" />
+          </div>
 
-            <button type="button" class="btn-secundario" style="width: 100%; margin-top: 10px;" onclick="mudarAbaPrincipal('sintomas')">
-                Avançar para Sintomas ➔
-            </button>
+          <div class="form-group">
+            <label for="pressao">Pressão Arterial</label>
+            <input type="text" id="pressao" name="pressao" />
+          </div>
+
+          <div class="form-group">
+            <label for="frequencia">Freq. Cardíaca (BPM)</label>
+            <input type="number" id="frequencia" name="frequencia" />
+          </div>
+
+          <div class="form-group">
+            <label for="glicemia">Glicemia (mg/dL)</label>
+            <input type="number" id="glicemia" name="glicemia"   />
+          </div>
         </div>
 
-        <div id="viewSintomas" style="display: none;">
-            <div class="paciente-vinculado">
-                <span>Paciente: <strong id="nomePacienteDisplay">Nenhum paciente vinculado</strong></span>
-                <input type="hidden" id="inputPacienteId" name="paciente_id">
-                
-                <button type="button" class="btn-secundario" onclick="abrirModal()">Vincular Paciente</button>
-            </div>
-
-            <div class="form-group">
-                <label>Relato de Sintomas:</label>
-                <textarea name="sintomas" rows="6" required placeholder="Descreva os sintomas relatados pelo paciente aqui..."></textarea>
-            </div>
-
-            <div style="display: flex; gap: 10px;">
-                <button type="button" class="btn-secundario" style="flex: 1;" onclick="mudarAbaPrincipal('sinais')">
-                    ⬅ Voltar
-                </button>
-                <button type="submit" class="btn-primario" style="flex: 2; margin-top: 0;">
-                    Salvar e Gerar Triagem
-                </button>
-            </div>
+        <div class="form-group">
+          <label for="medicamentos">Medicamentos de Uso Contínuo</label>
+          <input type="text" id="medicamentos" name="medicamentos" />
         </div>
 
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn-health"
+            onclick="mudarAbaPrincipal('sintomas')"
+          >
+            Avançar para sintomas
+          </button>
+        </div>
+      </div>
+
+      <div id="viewSintomas" class="triagem-section" style="display: none">
+        <div class="paciente-vinculado">
+          <div>
+            <span>Paciente vinculado</span>
+            <strong id="nomePacienteDisplay">Nenhum paciente vinculado</strong>
+          </div>
+
+          <input type="hidden" id="inputPacienteId" name="paciente_id" />
+
+          <button
+            type="button"
+            class="btn-health-outline"
+            onclick="abrirModal()"
+          >
+            Vincular Paciente
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label for="sintomas">Relato de Sintomas</label>
+          <textarea id="sintomas" name="sintomas" rows="6" required></textarea>
+        </div>
+
+        <div class="form-actions form-actions-between">
+          <button
+            type="button"
+            class="btn-health-outline"
+            onclick="mudarAbaPrincipal('sinais')"
+          >
+            Voltar
+          </button>
+
+          <button type="submit" class="btn-health">
+            Salvar e Gerar Triagem
+          </button>
+        </div>
+      </div>
     </form>
+  </div>
 </div>
 
-<dialog id="modalPaciente">
-    <div class="modal-header">
-        <h3>Vincular Paciente</h3>
-        <button class="btn-fechar" onclick="fecharModal()">✖</button>
+<dialog id="modalPaciente" class="modal-paciente">
+  <div class="modal-header">
+    <div>
+      <h3>Vincular Paciente</h3>
+      <p>Busque um paciente existente ou cadastre um novo.</p>
     </div>
-    
-    <div class="modal-body">
-        <div class="abas">
-            <button type="button" id="btnAbaBusca" class="ativo" onclick="mudarAbaModal('busca')">Buscar Existente</button>
-            <button type="button" id="btnAbaCadastro" onclick="mudarAbaModal('cadastro')">Cadastrar Novo</button>
+
+    <button class="btn-fechar" onclick="fecharModal()">✖</button>
+  </div>
+
+  <div class="modal-body">
+    <div class="modal-tabs">
+      <button
+        type="button"
+        id="btnAbaBusca"
+        class="ativo"
+        onclick="mudarAbaModal('busca')"
+      >
+        Buscar Existente
+      </button>
+
+      <button
+        type="button"
+        id="btnAbaCadastro"
+        onclick="mudarAbaModal('cadastro')"
+      >
+        Cadastrar Novo
+      </button>
+    </div>
+
+    <div id="viewBusca">
+      <div class="form-group">
+        <label for="filtroInput">Pesquisar paciente</label>
+        <input type="text" id="filtroInput" onkeyup="filtrarLista()" />
+      </div>
+
+      <ul class="lista-pacientes" id="ulPacientes">
+        <li onclick="selecionarPaciente(1, 'Maria da Silva')">
+          <strong>Maria da Silva</strong>
+          <span>CPF: 111.222.333-44</span>
+        </li>
+
+        <li onclick="selecionarPaciente(2, 'João Souza')">
+          <strong>João Souza</strong>
+          <span>CPF: 555.666.777-88</span>
+        </li>
+
+        <li onclick="selecionarPaciente(3, 'Ana Oliveira')">
+          <strong>Ana Oliveira</strong>
+          <span>CPF: 999.888.777-66</span>
+        </li>
+      </ul>
+    </div>
+
+    <div id="viewCadastro" style="display: none">
+      <div class="form-grid-modal">
+        <div class="form-group">
+          <label for="novoNome">Nome Completo</label>
+          <input type="text" id="novoNome" />
         </div>
 
-        <div id="viewBusca">
-            <input type="text" id="filtroInput" placeholder="Filtrar por nome ou CPF..." onkeyup="filtrarLista()">
-            
-            <ul class="lista-pacientes" id="ulPacientes">
-                <li onclick="selecionarPaciente(1, 'Maria da Silva')">Maria da Silva - CPF: 111.222.333-44</li>
-                <li onclick="selecionarPaciente(2, 'João Souza')">João Souza - CPF: 555.666.777-88</li>
-                <li onclick="selecionarPaciente(3, 'Ana Oliveira')">Ana Oliveira - CPF: 999.888.777-66</li>
-            </ul>
+        <div class="form-group">
+          <label for="novaIdade">Idade</label>
+          <input type="number" id="novaIdade" />
         </div>
 
-        <div id="viewCadastro" style="display: none;">
-            <div class="form-group">
-                <label>Nome Completo:</label>
-                <input type="text" id="novoNome">
-            </div>
-            <div class="form-group">
-                <label>Idade:</label>
-                <input type="number" id="novaIdade">
-            </div>
-            <div class="form-group">
-                <label>CPF:</label>
-                <input type="text" id="novoCpf">
-            </div>
-            <div class="form-group">
-                <label>Sexo:</label>
-                <input type="text" id="novoSexo">
-            </div>
-            <button type="button" class="btn-secundario" style="width: 100%" onclick="salvarNovoPacienteRapido()">Cadastrar e Selecionar</button>
+        <div class="form-group">
+          <label for="novoCpf">CPF</label>
+          <input type="text" id="novoCpf" />
         </div>
+
+        <div class="form-group">
+          <label for="novoSexo">Sexo</label>
+          <input type="text" id="novoSexo" />
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="btn-health btn-full"
+        onclick="salvarNovoPacienteRapido()"
+      >
+        Cadastrar e Selecionar
+      </button>
     </div>
+  </div>
 </dialog>
 
 <script>
-    // --- CONTROLE DAS ABAS PRINCIPAIS (Sinais / Sintomas) ---
-    function mudarAbaPrincipal(aba) {
-        if (aba === 'sinais') {
-            document.getElementById("viewSinaisVitais").style.display = "block";
-            document.getElementById("viewSintomas").style.display = "none";
-            document.getElementById("btnAbaSinais").classList.add("ativo");
-            document.getElementById("btnAbaSintomas").classList.remove("ativo");
-        } else {
-            document.getElementById("viewSinaisVitais").style.display = "none";
-            document.getElementById("viewSintomas").style.display = "block";
-            document.getElementById("btnAbaSintomas").classList.add("ativo");
-            document.getElementById("btnAbaSinais").classList.remove("ativo");
-        }
+  function mudarAbaPrincipal(aba) {
+    if (aba === "sinais") {
+      document.getElementById("viewSinaisVitais").style.display = "block";
+      document.getElementById("viewSintomas").style.display = "none";
+      document.getElementById("btnAbaSinais").classList.add("ativo");
+      document.getElementById("btnAbaSintomas").classList.remove("ativo");
+    } else {
+      document.getElementById("viewSinaisVitais").style.display = "none";
+      document.getElementById("viewSintomas").style.display = "block";
+      document.getElementById("btnAbaSintomas").classList.add("ativo");
+      document.getElementById("btnAbaSinais").classList.remove("ativo");
+    }
+  }
+
+  const modal = document.getElementById("modalPaciente");
+
+  function abrirModal() {
+    modal.showModal();
+  }
+
+  function fecharModal() {
+    modal.close();
+  }
+
+  function selecionarPaciente(id, nome) {
+    document.getElementById("nomePacienteDisplay").innerText = nome;
+    document.getElementById("inputPacienteId").value = id;
+    fecharModal();
+  }
+
+  function mudarAbaModal(aba) {
+    if (aba === "busca") {
+      document.getElementById("viewBusca").style.display = "block";
+      document.getElementById("viewCadastro").style.display = "none";
+      document.getElementById("btnAbaBusca").classList.add("ativo");
+      document.getElementById("btnAbaCadastro").classList.remove("ativo");
+    } else {
+      document.getElementById("viewBusca").style.display = "none";
+      document.getElementById("viewCadastro").style.display = "block";
+      document.getElementById("btnAbaCadastro").classList.add("ativo");
+      document.getElementById("btnAbaBusca").classList.remove("ativo");
+    }
+  }
+
+  function filtrarLista() {
+    let filtro = document.getElementById("filtroInput").value.toUpperCase();
+    let ul = document.getElementById("ulPacientes");
+    let li = ul.getElementsByTagName("li");
+
+    for (let i = 0; i < li.length; i++) {
+      let texto = li[i].textContent || li[i].innerText;
+
+      if (texto.toUpperCase().indexOf(filtro) > -1) {
+        li[i].style.display = "";
+      } else {
+        li[i].style.display = "none";
+      }
+    }
+  }
+
+  function salvarNovoPacienteRapido() {
+    let nome = document.getElementById("novoNome").value;
+
+    if (!nome) {
+      alert("Preencha o nome do paciente!");
+      return;
     }
 
-    // --- CONTROLE DO MODAL DE PACIENTES ---
-    const modal = document.getElementById("modalPaciente");
-
-    function abrirModal() {
-        modal.showModal();
-    }
-
-    function fecharModal() {
-        modal.close();
-    }
-
-    function selecionarPaciente(id, nome) {
-        document.getElementById("nomePacienteDisplay").innerText = nome;
-        document.getElementById("inputPacienteId").value = id;
-        fecharModal();
-    }
-
-    function mudarAbaModal(aba) {
-        if (aba === 'busca') {
-            document.getElementById("viewBusca").style.display = "block";
-            document.getElementById("viewCadastro").style.display = "none";
-            document.getElementById("btnAbaBusca").classList.add("ativo");
-            document.getElementById("btnAbaCadastro").classList.remove("ativo");
-        } else {
-            document.getElementById("viewBusca").style.display = "none";
-            document.getElementById("viewCadastro").style.display = "block";
-            document.getElementById("btnAbaCadastro").classList.add("ativo");
-            document.getElementById("btnAbaBusca").classList.remove("ativo");
-        }
-    }
-
-    function filtrarLista() {
-        let filtro = document.getElementById("filtroInput").value.toUpperCase();
-        let ul = document.getElementById("ulPacientes");
-        let li = ul.getElementsByTagName("li");
-
-        for (let i = 0; i < li.length; i++) {
-            let texto = li[i].textContent || li[i].innerText;
-            if (texto.toUpperCase().indexOf(filtro) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
-            }
-        }
-    }
-
-    function salvarNovoPacienteRapido() {
-        let nome = document.getElementById("novoNome").value;
-        if (!nome) {
-            alert("Preencha o nome do paciente!");
-            return;
-        }
-        selecionarPaciente(99, nome);
-    }
+    selecionarPaciente(99, nome);
+  }
 </script>
+
 {% endblock %}

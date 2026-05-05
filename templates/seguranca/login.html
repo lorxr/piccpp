@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Login - Sistema de Triagem</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+
+  <body class="corpo-login">
+    <main class="tela-login">
+      <section class="cartao-login">
+        <div class="lado-info-login">
+          <div class="logo-login">+</div>
+
+          <h1>ALVORMED.AI</h1>
+
+          <p>
+            Plataforma de apoio à pré-consulta, utilizando dados clínicos para
+            auxiliar na classificação inicial de pacientes.
+          </p>
+
+          <div class="etiquetas-login">
+            <span>Pré-consulta</span>
+            <span>Triagem</span>
+            <span>Machine Learning</span>
+          </div>
+        </div>
+
+        <div class="lado-form-login">
+          <h2>Acesso ao sistema</h2>
+
+          <p class="texto-login">
+            Informe suas credenciais para acessar o ambiente de triagem.
+          </p>
+
+          <form action="/login" method="POST">
+            <div class="form-group">
+              <label for="usuarioLogin">Usuário</label>
+
+              <input
+                type="text"
+                id="usuarioLogin"
+                name="usuarioLogin"
+                placeholder="Digite seu usuário"
+                required
+                autocomplete="username"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="senhaLogin">Senha</label>
+
+              <div class="campo-senha">
+                <input
+                  type="password"
+                  id="senhaLogin"
+                  name="senhaLogin"
+                  placeholder="Digite sua senha"
+                  required
+                  autocomplete="current-password"
+                />
+
+                <button
+                  type="button"
+                  class="botao-ver-senha"
+                  onclick="alternarSenha()"
+                  aria-label="Mostrar ou esconder senha"
+                >
+                  <svg
+                    id="iconeOlhoAberto"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"
+                    />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+
+                  <svg
+                    id="iconeOlhoFechado"
+                    class="icone-escondido"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M3 3l18 18" />
+                    <path d="M10.58 10.58A2 2 0 0 0 12 14a2 2 0 0 0 1.42-.58" />
+                    <path
+                      d="M9.88 4.24A10.94 10.94 0 0 1 12 4c6.5 0 10 8 10 8a16.2 16.2 0 0 1-2.93 4.21"
+                    />
+                    <path
+                      d="M6.61 6.61C3.94 8.41 2 12 2 12s3.5 8 10 8a10.8 10.8 0 0 0 5.39-1.39"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" class="botao-login">Entrar</button>
+
+            <a href="#" class="link-esqueci-senha"> Esqueci minha senha </a>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      function alternarSenha() {
+        const campoSenha = document.getElementById("senhaLogin");
+        const iconeOlhoAberto = document.getElementById("iconeOlhoAberto");
+        const iconeOlhoFechado = document.getElementById("iconeOlhoFechado");
+
+        if (campoSenha.type === "password") {
+          campoSenha.type = "text";
+          iconeOlhoAberto.classList.add("icone-escondido");
+          iconeOlhoFechado.classList.remove("icone-escondido");
+        } else {
+          campoSenha.type = "password";
+          iconeOlhoAberto.classList.remove("icone-escondido");
+          iconeOlhoFechado.classList.add("icone-escondido");
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,150 +1,1378 @@
 /* ==================================================
-   1. ESTRUTURA GERAL E LAYOUT (MENU LATERAL)
+   CONFIGURAÇÕES GERAIS
    ================================================== */
-body, html { 
-    margin: 0; 
-    padding: 0; 
-    height: 100%; 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    background-color: #f0f2f5; 
+
+:root {
+  --cor-azul: #0d6efd;
+  --cor-azul-escuro: #0b5ed7;
+  --cor-verde: #198754;
+  --cor-menu: #2c3e50;
+  --cor-texto: #1f2937;
+  --cor-texto-claro: #6c757d;
+  --cor-borda: #d8dee6;
+  --cor-fundo: #f4f8fc;
+  --cor-branco: #ffffff;
+  --sombra-card: 0 20px 45px rgba(44, 62, 80, 0.15);
 }
 
-/* O wrapper usa Flexbox para colocar a barra e o conteúdo lado a lado */
-.wrapper { 
-    display: flex; 
-    height: 100vh; 
+* {
+  box-sizing: border-box;
 }
 
-/* Barra Lateral Fixa */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f2f5;
+  color: var(--cor-texto);
+}
+
+/* ==================================================
+   LOGIN SEM MENU LATERAL
+   Funciona com as classes antigas e novas
+   ================================================== */
+
+.corpo-login {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #eef6ff 0%, #f8fbff 50%, #eef7f1 100%);
+}
+
+.tela-login,
+.login-page {
+  width: 100vw;
+  height: 100vh;
+  padding: 24px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #eef6ff 0%, #f8fbff 50%, #eef7f1 100%);
+}
+
+.cartao-login,
+.login-card {
+  width: 100%;
+  max-width: 960px;
+  height: min(540px, calc(100vh - 48px));
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--cor-branco);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--sombra-card);
+}
+
+.lado-info-login,
+.login-info {
+  background: linear-gradient(
+    160deg,
+    var(--cor-azul) 0%,
+    var(--cor-azul-escuro) 45%,
+    var(--cor-verde) 100%
+  );
+  color: white;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logo-login,
+.login-logo {
+  width: 66px;
+  height: 66px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  font-weight: 800;
+  margin-bottom: 24px;
+  color: white;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+.lado-info-login h1,
+.login-info h1 {
+  font-size: 34px;
+  margin: 0 0 15px 0;
+  line-height: 1.1;
+  color: white;
+}
+
+.lado-info-login p,
+.login-info p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.etiquetas-login,
+.login-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.etiquetas-login span,
+.login-badges span {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.lado-form-login,
+.login-form-area {
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: white;
+}
+
+.lado-form-login h2,
+.login-form-area h2 {
+  margin: 0;
+  font-size: 28px;
+  color: var(--cor-texto);
+}
+
+.texto-login,
+.login-subtitle {
+  margin: 10px 0 28px 0;
+  color: var(--cor-texto-claro);
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+.campo-senha,
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.campo-senha input,
+.password-wrapper input {
+  padding-right: 52px !important;
+}
+
+.botao-ver-senha,
+.btn-toggle-password {
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--cor-texto-claro);
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.botao-ver-senha:hover,
+.btn-toggle-password:hover {
+  color: var(--cor-azul);
+}
+
+.botao-ver-senha:focus,
+.btn-toggle-password:focus {
+  outline: none;
+}
+
+.icone-escondido {
+  display: none;
+}
+
+.botao-login,
+.btn-login {
+  width: 100%;
+  padding: 15px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 10px;
+  background: var(--cor-azul);
+  color: white;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.botao-login:hover,
+.btn-login:hover {
+  background: var(--cor-azul-escuro);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(13, 110, 253, 0.25);
+}
+
+.link-esqueci-senha {
+  display: block;
+  text-align: center;
+  margin-top: 16px;
+  color: var(--cor-azul);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.link-esqueci-senha:hover {
+  text-decoration: underline;
+}
+
+/* ==================================================
+   ESTRUTURA DAS TELAS INTERNAS
+   ================================================== */
+
+.wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
 .sidebar {
-    width: 250px;
-    background: #2c3e50; /* Azul escuro moderno */
-    color: white;
-    padding: 20px;
-}
-.sidebar h2 { margin-top: 0; }
-.sidebar hr { border-color: #34495e; margin-bottom: 20px; }
-.sidebar ul { list-style: none; padding: 0; }
-.sidebar li { margin: 15px 0; }
-.sidebar a { color: #ecf0f1; text-decoration: none; font-weight: bold; transition: color 0.2s; }
-.sidebar a:hover { color: #3498db; }
-
-/* Área de Conteúdo Principal */
-.main-content { 
-    flex: 1; /* Ocupa todo o resto da tela */
-    display: flex; 
-    flex-direction: column; 
-    overflow-y: auto; 
+  width: 250px;
+  height: 100vh;
+  background: var(--cor-menu);
+  color: white;
+  padding: 22px 20px;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
-/* Cabeçalho Branco */
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: linear-gradient(160deg, var(--cor-azul), var(--cor-verde));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.sidebar h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.sidebar hr {
+  border: none;
+  border-top: 1px solid #43596d;
+  margin: 24px 0;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  padding: 13px 14px;
+  border-radius: 12px;
+  color: #ecf0f1;
+  text-decoration: none;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.sidebar a:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #ffffff;
+}
+
+.main-content {
+  flex: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 .top-header {
-    height: 60px;
-    background: white;
-    display: flex;
-    align-items: center;
-    padding: 0 30px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  height: 64px;
+  background: var(--cor-branco);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+  flex-shrink: 0;
 }
-.top-header h3 { margin: 0; color: #333; }
 
-/* Espaçamento onde entram os Cards */
-.content { padding: 30px; }
+.top-header h3 {
+  margin: 0;
+  color: var(--cor-texto);
+  font-size: 22px;
+}
 
+.top-header span {
+  display: block;
+  margin-top: 3px;
+  color: var(--cor-texto-claro);
+  font-size: 13px;
+}
+
+.content {
+  height: calc(100vh - 64px);
+  padding: 26px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #eef6ff 0%, #f8fbff 50%, #eef7f1 100%);
+}
 
 /* ==================================================
-   2. COMPONENTES DE TELA (CARDS, FORMULÁRIOS, BOTÕES)
+   CAMPOS E BOTÕES
    ================================================== */
+
+.form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 700;
+  margin-bottom: 7px;
+  color: #34495e;
+  font-size: 14px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="email"],
+textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 15px;
+  background: #f8fafc;
+  color: var(--cor-texto);
+  transition: 0.2s;
+}
+
+textarea {
+  resize: none;
+  min-height: 110px;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--cor-azul);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.12);
+}
+
+.btn-health,
+.btn-health-outline,
+.btn-primario,
+.btn-secundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-health,
+.btn-primario {
+  background: var(--cor-azul);
+  color: white;
+  border: none;
+}
+
+.btn-health:hover,
+.btn-primario:hover {
+  background: var(--cor-azul-escuro);
+  transform: translateY(-1px);
+}
+
+.btn-health-outline,
+.btn-secundario {
+  background: white;
+  color: var(--cor-azul);
+  border: 1px solid rgba(13, 110, 253, 0.25);
+}
+
+.btn-health-outline:hover,
+.btn-secundario:hover {
+  background: #eef6ff;
+  border-color: var(--cor-azul);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.system-badge {
+  display: inline-flex;
+  width: fit-content;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(13, 110, 253, 0.1);
+  color: var(--cor-azul);
+  font-weight: 800;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+/* ==================================================
+   TELA INICIAL
+   ================================================== */
+
+.home-page {
+  width: 100%;
+  height: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.home-hero {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: 22px;
+}
+
+.home-hero-content,
+.home-hero-panel,
+.stat-card,
+.triagem-card,
 .card {
-    background: #fff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    max-width: 800px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: var(--sombra-card);
 }
 
-.form-group { 
-    margin-bottom: 20px; 
-    display: flex; 
-    flex-direction: column; 
-}
-.form-group label { 
-    font-weight: 600; 
-    margin-bottom: 8px; 
-    color: #333; 
-}
-textarea, input[type="text"] {
-    width: 100%; 
-    padding: 12px; 
-    border: 1px solid #ccc; 
-    border-radius: 4px; 
-    box-sizing: border-box; 
-    font-family: inherit;
+.home-hero-content {
+  padding: 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.btn-primario, .btn-secundario {
-    padding: 10px 20px; 
-    border: none; 
-    border-radius: 4px; 
-    cursor: pointer; 
-    font-weight: bold; 
-    font-size: 14px;
+.home-hero-content h1 {
+  margin: 0;
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.08;
 }
-.btn-primario { background-color: #0d6efd; color: white; margin-top: 15px; width: 100%; padding: 15px; }
-.btn-primario:hover { background-color: #0b5ed7; }
-.btn-secundario { background-color: #6c757d; color: white; }
-.btn-secundario:hover { background-color: #5c636a; }
 
+.home-hero-content p {
+  margin: 16px 0 0 0;
+  color: var(--cor-texto-claro);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.home-hero-panel {
+  padding: 34px;
+  color: white;
+  background: linear-gradient(
+    160deg,
+    var(--cor-azul) 0%,
+    var(--cor-azul-escuro) 45%,
+    var(--cor-verde) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.panel-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  font-weight: 800;
+  margin-bottom: 22px;
+}
+
+.home-hero-panel h2 {
+  margin: 0 0 12px 0;
+  font-size: 27px;
+}
+
+.home-hero-panel p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.55;
+}
+
+.home-stats {
+  height: 160px;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.stat-card {
+  padding: 22px;
+  overflow: hidden;
+}
+
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: #eef6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.stat-card h3 {
+  margin: 14px 0 6px 0;
+  font-size: 19px;
+}
+
+.stat-card p {
+  margin: 0;
+  color: var(--cor-texto-claro);
+  line-height: 1.45;
+  font-size: 14px;
+}
 
 /* ==================================================
-   3. ÁREA DE PACIENTE E MODAL (DIALOG)
+   TELA DE TRIAGEM
    ================================================== */
+
+.triagem-page {
+  width: 100%;
+  height: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-header {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 40px);
+}
+
+.page-header p {
+  margin: 8px 0 0 0;
+  max-width: 720px;
+  color: var(--cor-texto-claro);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.triagem-card,
+.card {
+  flex: 1;
+  min-height: 0;
+  padding: 26px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.triagem-card-header {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.triagem-card-header h2,
+.card h2 {
+  margin: 0;
+  font-size: 25px;
+}
+
+.triagem-card-header p {
+  margin: 6px 0 0 0;
+  color: var(--cor-texto-claro);
+}
+
+.triagem-status {
+  padding: 8px 13px;
+  border-radius: 999px;
+  background: #e8f7ef;
+  color: var(--cor-verde);
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.step-tabs,
+.abas {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.step-tabs button,
+.abas button {
+  padding: 13px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--cor-borda);
+  background: #f8fafc;
+  color: #34495e;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.2s;
+}
+
+.step-tabs button span {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #e9eef5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-tabs button.ativo,
+.abas button.ativo {
+  background: linear-gradient(160deg, var(--cor-azul), var(--cor-verde));
+  color: white;
+  border-color: transparent;
+}
+
+.step-tabs button.ativo span {
+  background: rgba(255, 255, 255, 0.22);
+  color: white;
+}
+
+.triagem-card form,
+.card form {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.triagem-section {
+  height: 100%;
+  overflow: hidden;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.form-actions-between {
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.form-actions-between .btn-health {
+  flex: 2;
+}
+
+.form-actions-between .btn-health-outline {
+  flex: 1;
+}
+
 .paciente-vinculado {
-    background: #e9ecef; 
-    padding: 15px; 
-    border-radius: 6px; 
-    margin-bottom: 20px;
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center;
+  background: linear-gradient(135deg, #eef6ff, #f4fbf7);
+  border: 1px solid rgba(13, 110, 253, 0.14);
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
 }
-.paciente-vinculado span { font-size: 16px; color: #495057; }
 
-dialog {
-    border: none; 
-    border-radius: 8px; 
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    padding: 0; 
-    width: 500px; 
-    max-width: 90%;
+.paciente-vinculado span {
+  display: block;
+  color: var(--cor-texto-claro);
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
 }
-dialog::backdrop { background: rgba(0, 0, 0, 0.5); }
+
+.paciente-vinculado strong {
+  color: var(--cor-texto);
+  font-size: 18px;
+}
+
+/* ==================================================
+   MODAL DO PACIENTE
+   ================================================== */
+
+dialog,
+dialog.modal-paciente {
+  border: none;
+  border-radius: 18px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.22);
+  padding: 0;
+  width: 620px;
+  max-width: 92%;
+  max-height: 86vh;
+  overflow: hidden;
+}
+
+dialog::backdrop {
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(3px);
+}
+
 .modal-header {
-    background: #f8f9fa; 
-    padding: 15px 20px; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    border-bottom: 1px solid #dee2e6;
+  background: linear-gradient(160deg, var(--cor-azul), var(--cor-verde));
+  color: white;
+  padding: 22px 26px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
-.modal-header h3 { margin: 0; }
-.btn-fechar { background: none; border: none; font-size: 20px; cursor: pointer; color: #dc3545; }
-.modal-body { padding: 20px; }
 
-/* Abas do Modal */
-.abas { display: flex; gap: 10px; margin-bottom: 15px; }
-.abas button { flex: 1; padding: 8px; border: 1px solid #0d6efd; background: white; color: #0d6efd; cursor: pointer; border-radius: 4px; }
-.abas button.ativo { background: #0d6efd; color: white; }
-
-.lista-pacientes { 
-    list-style: none; 
-    padding: 0; 
-    margin-top: 15px; 
-    max-height: 200px; 
-    overflow-y: auto; 
-    border: 1px solid #ddd; 
-    border-radius: 4px; 
+.modal-header h3 {
+  margin: 0;
+  font-size: 24px;
 }
-.lista-pacientes li { padding: 12px; border-bottom: 1px solid #eee; cursor: pointer; transition: 0.2s; }
-.lista-pacientes li:hover { background-color: #f1f4f9; }
-.lista-pacientes li:last-child { border-bottom: none; }
+
+.modal-header p {
+  margin: 6px 0 0 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.btn-fechar {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: white;
+  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.modal-body {
+  padding: 24px;
+  overflow: hidden;
+}
+
+.modal-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.modal-tabs button {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--cor-borda);
+  background: #f8fafc;
+  color: #34495e;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.modal-tabs button.ativo {
+  background: var(--cor-azul);
+  color: white;
+  border-color: var(--cor-azul);
+}
+
+.lista-pacientes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 185px;
+  overflow: hidden;
+  border: 1px solid var(--cor-borda);
+  border-radius: 14px;
+}
+
+.lista-pacientes li {
+  padding: 14px;
+  border-bottom: 1px solid #eef2f7;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lista-pacientes li:hover {
+  background: #eef6ff;
+}
+
+.lista-pacientes li:last-child {
+  border-bottom: none;
+}
+
+.lista-pacientes strong {
+  color: var(--cor-texto);
+}
+
+.lista-pacientes span {
+  color: var(--cor-texto-claro);
+  font-size: 13px;
+}
+
+.form-grid-modal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* ==================================================
+   RESPONSIVIDADE
+   ================================================== */
+
+@media (max-width: 1000px) {
+  .home-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .home-hero-panel {
+    display: none;
+  }
+
+  .home-stats {
+    height: 170px;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 800px) {
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: 78px;
+    padding: 12px 18px;
+  }
+
+  .sidebar-brand {
+    justify-content: center;
+  }
+
+  .brand-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 23px;
+  }
+
+  .sidebar h2 {
+    font-size: 22px;
+  }
+
+  .sidebar hr {
+    display: none;
+  }
+
+  .sidebar ul {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .sidebar li {
+    margin: 0;
+  }
+
+  .sidebar a {
+    padding: 7px 11px;
+    font-size: 14px;
+  }
+
+  .main-content {
+    height: calc(100vh - 78px);
+  }
+
+  .top-header {
+    height: 52px;
+    padding: 0 20px;
+  }
+
+  .top-header h3 {
+    font-size: 19px;
+  }
+
+  .top-header span {
+    display: none;
+  }
+
+  .content {
+    height: calc(100vh - 78px - 52px);
+    padding: 16px;
+  }
+
+  .home-page {
+    gap: 14px;
+  }
+
+  .home-hero {
+    flex: 1;
+  }
+
+  .home-hero-content {
+    padding: 24px;
+  }
+
+  .home-hero-content h1 {
+    font-size: 29px;
+  }
+
+  .home-hero-content p {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .home-stats {
+    height: 135px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .stat-icon {
+    display: none;
+  }
+
+  .stat-card h3 {
+    font-size: 15px;
+    margin: 0 0 5px 0;
+  }
+
+  .stat-card p {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .page-header {
+    margin-bottom: 12px;
+  }
+
+  .page-header h1 {
+    font-size: 28px;
+  }
+
+  .page-header p {
+    display: none;
+  }
+
+  .triagem-card,
+  .card {
+    padding: 18px;
+  }
+
+  .triagem-card-header {
+    margin-bottom: 12px;
+  }
+
+  .triagem-card-header p,
+  .triagem-status {
+    display: none;
+  }
+
+  .step-tabs,
+  .abas {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .step-tabs button,
+  .abas button {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .step-tabs button span {
+    width: 24px;
+    height: 24px;
+  }
+
+  .form-grid,
+  .form-grid-modal {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .form-group {
+    margin-bottom: 11px;
+  }
+
+  input[type="text"],
+  input[type="password"],
+  input[type="number"],
+  input[type="email"],
+  textarea {
+    padding: 11px 12px;
+    font-size: 14px;
+  }
+
+  textarea {
+    min-height: 90px;
+  }
+
+  .paciente-vinculado {
+    padding: 13px;
+    margin-bottom: 12px;
+  }
+
+  dialog,
+  dialog.modal-paciente {
+    max-height: 82vh;
+  }
+}
+
+@media (max-width: 760px) {
+  .cartao-login,
+  .login-card {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    height: auto;
+    max-height: calc(100vh - 32px);
+  }
+
+  .lado-info-login,
+  .login-info {
+    padding: 24px;
+  }
+
+  .logo-login,
+  .login-logo {
+    width: 48px;
+    height: 48px;
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .lado-info-login h1,
+  .login-info h1 {
+    font-size: 25px;
+    margin-bottom: 8px;
+  }
+
+  .lado-info-login p,
+  .login-info p,
+  .etiquetas-login,
+  .login-badges {
+    display: none;
+  }
+
+  .lado-form-login,
+  .login-form-area {
+    padding: 28px 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  .sidebar {
+    height: 72px;
+    padding: 10px 12px;
+  }
+
+  .brand-icon {
+    display: none;
+  }
+
+  .sidebar h2 {
+    font-size: 20px;
+  }
+
+  .sidebar ul {
+    margin-top: 8px;
+  }
+
+  .sidebar a {
+    font-size: 13px;
+    padding: 6px 9px;
+  }
+
+  .main-content {
+    height: calc(100vh - 72px);
+  }
+
+  .content {
+    height: calc(100vh - 72px - 52px);
+    padding: 10px;
+  }
+
+  .home-hero-content {
+    padding: 20px;
+  }
+
+  .system-badge {
+    display: none;
+  }
+
+  .home-hero-content h1 {
+    font-size: 25px;
+  }
+
+  .home-hero-content p {
+    font-size: 14px;
+  }
+
+  .home-actions {
+    margin-top: 18px;
+    flex-direction: column;
+  }
+
+  .btn-health,
+  .btn-health-outline,
+  .btn-primario,
+  .btn-secundario {
+    width: 100%;
+  }
+
+  .home-stats {
+    display: none;
+  }
+
+  .triagem-page {
+    height: 100%;
+  }
+
+  .page-header {
+    display: none;
+  }
+
+  .triagem-card,
+  .card {
+    height: 100%;
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .triagem-card-header h2 {
+    font-size: 21px;
+  }
+
+  .step-tabs,
+  .abas {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid,
+  .form-grid-modal {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-actions,
+  .form-actions-between {
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .form-actions-between .btn-health,
+  .form-actions-between .btn-health-outline {
+    flex: unset;
+  }
+
+  .paciente-vinculado {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .modal-header {
+    padding: 18px;
+  }
+
+  .modal-header h3 {
+    font-size: 21px;
+  }
+
+  .modal-header p {
+    display: none;
+  }
+
+  .modal-body {
+    padding: 18px;
+  }
+
+  .modal-tabs {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .lista-pacientes {
+    max-height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tela-login,
+  .login-page {
+    padding: 12px;
+  }
+
+  .lado-info-login,
+  .login-info {
+    display: none;
+  }
+
+  .cartao-login,
+  .login-card {
+    display: block;
+    height: auto;
+    max-height: calc(100vh - 24px);
+  }
+
+  .lado-form-login,
+  .login-form-area {
+    padding: 26px 22px;
+  }
+
+  .lado-form-login h2,
+  .login-form-area h2 {
+    font-size: 25px;
+  }
+}
+
+@media (max-height: 680px) {
+  .content {
+    padding: 14px;
+  }
+
+  .home-hero-content,
+  .home-hero-panel,
+  .triagem-card,
+  .card {
+    padding: 20px;
+  }
+
+  .home-stats {
+    height: 125px;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .stat-icon {
+    display: none;
+  }
+
+  .page-header {
+    margin-bottom: 10px;
+  }
+
+  .page-header p,
+  .triagem-card-header p,
+  .triagem-status {
+    display: none;
+  }
+
+  .triagem-card-header {
+    margin-bottom: 10px;
+  }
+
+  .step-tabs,
+  .abas {
+    margin-bottom: 12px;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  textarea {
+    min-height: 80px;
+  }
+
+  .login-info,
+  .lado-info-login {
+    padding: 28px;
+  }
+
+  .login-info p,
+  .lado-info-login p,
+  .etiquetas-login,
+  .login-badges {
+    display: none;
+  }
+}
