@@ -2,32 +2,119 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Sistema de Triagem</title>
+
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
   </head>
+
   <body>
     <div class="wrapper">
       <nav class="sidebar">
-        <h2>Alvormed.AI</h2>
+        <div class="sidebar-brand">
+          <div class="brand-icon">+</div>
+          <h2>Alvormed.AI</h2>
+        </div>
+
         <hr />
+
         <ul>
-          <li><a href="/">Início</a></li>
-          <li><a href="/nova-triagem">Nova Triagem</a></li>
+          <li>
+            <a href="/inicio">
+              <span>Início</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="/nova-triagem">
+              <span>Nova Triagem</span>
+            </a>
+          </li>
         </ul>
       </nav>
 
       <main class="main-content">
         <header class="top-header">
-          <h3>Módulo de Enfermagem</h3>
+          <div>
+            <h3>Módulo de Enfermagem</h3>
+          </div>
         </header>
 
         <section class="content">
           {% block conteudo %}
-          <h1>Bem-vindo ao sistema de triagem.</h1>
-          <p>Selecione uma opção no menu lateral para começar.</p>
+
+          <div class="home-page">
+            <section class="home-hero">
+              <div class="home-hero-content">
+                <span class="system-badge">Alvormed.AI</span>
+
+                <h1>Bem-vindo ao Sistema de Triagem Hospitalar</h1>
+
+                <p>
+                  Plataforma desenvolvida para apoiar a equipe de enfermagem no
+                  registro de sinais vitais, sintomas e vínculo do paciente,
+                  auxiliando na organização da pré-consulta.
+                </p>
+
+                <div class="home-actions">
+                  <a href="/nova-triagem" class="btn-health">
+                    Iniciar nova triagem
+                  </a>
+
+                  <a href="#" class="btn-health-outline"> Ver pacientes </a>
+                </div>
+              </div>
+
+              <div class="home-hero-panel">
+                <h2>Pré-consulta inteligente</h2>
+
+                <p>
+                  Registre dados clínicos iniciais e mantenha as informações
+                  organizadas para auxiliar no atendimento do paciente.
+                </p>
+              </div>
+            </section>
+
+            <section class="home-stats">
+              <div class="stat-card">
+                <span class="stat-icon">🩺</span>
+
+                <h3>Sinais vitais</h3>
+
+                <p>
+                  Registro de temperatura, pressão arterial, frequência cardíaca
+                  e glicemia.
+                </p>
+              </div>
+
+              <div class="stat-card">
+                <span class="stat-icon">👤</span>
+
+                <h3>Paciente vinculado</h3>
+
+                <p>
+                  Busca ou cadastro rápido para relacionar a triagem ao paciente
+                  correto.
+                </p>
+              </div>
+
+              <div class="stat-card">
+                <span class="stat-icon">🤖</span>
+
+                <h3>Apoio por dados</h3>
+
+                <p>
+                  Estrutura preparada para futura classificação com machine
+                  learning.
+                </p>
+              </div>
+            </section>
+          </div>
+
           {% endblock %}
         </section>
       </main>
