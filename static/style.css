@@ -33,7 +33,6 @@ body {
 
 /* ==================================================
    LOGIN SEM MENU LATERAL
-   Funciona com as classes antigas e novas
    ================================================== */
 
 .corpo-login {
@@ -70,12 +69,8 @@ body {
 
 .lado-info-login,
 .login-info {
-  background: linear-gradient(
-    160deg,
-    var(--cor-azul) 0%,
-    var(--cor-azul-escuro) 45%,
-    var(--cor-verde) 100%
-  );
+  /* Aqui estão as suas cores novas! */
+  background: linear-gradient(135deg, #052D73 0%, #2DAFB9 100%);
   color: white;
   padding: 48px;
   display: flex;
@@ -894,6 +889,175 @@ dialog::backdrop {
 }
 
 /* ==================================================
+   TELA DE PRÉ-ANÁLISE
+   O campo da LLM fica maior aqui
+   ================================================== */
+
+.pagina-pre-analise {
+  width: 100%;
+  height: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cartao-pre-analise {
+  flex: 1;
+  min-height: 0;
+  background: white;
+  border-radius: 20px;
+  box-shadow: var(--sombra-card);
+  overflow: hidden;
+}
+
+.tela-foco-llm {
+  height: 100%;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cabecalho-pre-analise.compacto {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.cabecalho-pre-analise h2 {
+  margin: 0;
+  font-size: 24px;
+  color: var(--cor-texto);
+}
+
+.status-pre-analise {
+  padding: 8px 13px;
+  border-radius: 999px;
+  background: #fff4e5;
+  color: #b76e00;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.resumo-atendimento-pequeno {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: 1.3fr repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.resumo-atendimento-pequeno div {
+  background: linear-gradient(135deg, #eef6ff, #f8fbff);
+  border: 1px solid rgba(13, 110, 253, 0.12);
+  border-radius: 12px;
+  padding: 8px 10px;
+  overflow: hidden;
+}
+
+.resumo-atendimento-pequeno span {
+  display: block;
+  color: var(--cor-texto-claro);
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.resumo-atendimento-pequeno strong {
+  display: block;
+  color: var(--cor-texto);
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.form-pre-analise {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.area-texto-llm {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.topo-texto-llm {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.topo-texto-llm h3 {
+  margin: 0;
+  font-size: 19px;
+  color: var(--cor-texto);
+}
+
+.topo-texto-llm p {
+  margin: 4px 0 0 0;
+  color: var(--cor-texto-claro);
+  font-size: 13px;
+}
+
+.textarea-pre-analise,
+.textarea-grande-llm {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 430px;
+  resize: none;
+  border-radius: 16px;
+  padding: 20px;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.textarea-pre-analise[readonly],
+.textarea-grande-llm[readonly] {
+  background: #f8fafc;
+  color: #34495e;
+  cursor: default;
+}
+
+.textarea-pre-analise:not([readonly]),
+.textarea-grande-llm:not([readonly]) {
+  background: white;
+  border-color: var(--cor-azul);
+}
+
+.botoes-pre-analise {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.botoes-pre-analise .btn-health-outline {
+  flex: 1;
+}
+
+.botoes-pre-analise .btn-health {
+  flex: 2;
+}
+
+/* ==================================================
    RESPONSIVIDADE
    ================================================== */
 
@@ -913,6 +1077,10 @@ dialog::backdrop {
   .page-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .resumo-atendimento-pequeno {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -1104,6 +1272,33 @@ dialog::backdrop {
   dialog.modal-paciente {
     max-height: 82vh;
   }
+
+  .tela-foco-llm {
+    padding: 14px;
+  }
+
+  .cabecalho-pre-analise h2 {
+    font-size: 22px;
+  }
+
+  .status-pre-analise {
+    display: none;
+  }
+
+  .system-badge {
+    display: none;
+  }
+
+  .topo-texto-llm p {
+    display: none;
+  }
+
+  .textarea-pre-analise,
+  .textarea-grande-llm {
+    min-height: 360px;
+    padding: 16px;
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 760px) {
@@ -1211,7 +1406,8 @@ dialog::backdrop {
     display: none;
   }
 
-  .triagem-page {
+  .triagem-page,
+  .pagina-pre-analise {
     height: 100%;
   }
 
@@ -1282,6 +1478,30 @@ dialog::backdrop {
   .lista-pacientes {
     max-height: 150px;
   }
+
+  .resumo-atendimento-pequeno {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .topo-texto-llm {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .topo-texto-llm .btn-health-outline {
+    width: 100%;
+  }
+
+  .botoes-pre-analise {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .botoes-pre-analise .btn-health,
+  .botoes-pre-analise .btn-health-outline {
+    width: 100%;
+    flex: unset;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1310,6 +1530,16 @@ dialog::backdrop {
   .lado-form-login h2,
   .login-form-area h2 {
     font-size: 25px;
+  }
+
+  .resumo-atendimento-pequeno {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .textarea-pre-analise,
+  .textarea-grande-llm {
+    min-height: 330px;
   }
 }
 
@@ -1375,4 +1605,143 @@ dialog::backdrop {
   .login-badges {
     display: none;
   }
+
+  .tela-foco-llm {
+    padding: 12px;
+  }
+
+  .cabecalho-pre-analise.compacto {
+    margin-bottom: 6px;
+  }
+
+  .cabecalho-pre-analise h2 {
+    font-size: 20px;
+  }
+
+  .status-pre-analise,
+  .topo-texto-llm p {
+    display: none;
+  }
+
+  .resumo-atendimento-pequeno {
+    margin-bottom: 7px;
+  }
+
+  .resumo-atendimento-pequeno div {
+    padding: 6px 8px;
+  }
+
+  .topo-texto-llm {
+    margin-bottom: 6px;
+  }
+
+  .topo-texto-llm h3 {
+    font-size: 17px;
+  }
+
+  .textarea-pre-analise,
+  .textarea-grande-llm {
+    min-height: 300px;
+    padding: 14px;
+  }
+
+  .botoes-pre-analise {
+    margin-top: 8px;
+  }
+
+  /* ==================================================
+   CAMPO DE PALAVRAS-CHAVE
+   ================================================== */
+
+  .campo-tags {
+    width: 100%;
+    min-height: 48px;
+    padding: 8px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 10px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    cursor: text;
+    transition: 0.2s;
+  }
+
+  .campo-tags:focus-within {
+    border-color: var(--cor-azul);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.12);
+  }
+
+  .lista-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag-palavra-chave {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: linear-gradient(160deg, var(--cor-azul), var(--cor-verde));
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .tag-palavra-chave button {
+    width: 18px;
+    height: 18px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tag-palavra-chave button:hover {
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  .campo-tags input {
+    flex: 1;
+    min-width: 180px;
+    border: none;
+    background: transparent;
+    padding: 8px;
+    font-size: 15px;
+    outline: none;
+  }
+
+  .campo-tags input:focus {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .ajuda-tags {
+    display: block;
+    margin-top: 7px;
+    color: var(--cor-texto-claro);
+    font-size: 12px;
+  }
+
+}
+
+/* ==================================================
+   LOGO CENTRALIZADA NO LOGIN
+   ================================================== */
+.logo-imagem-centro {
+  display: block;
+  margin: 0 auto 24px auto; /* Centraliza nas laterais e dá um respiro embaixo */
+  max-width: 220px; /* Tamanho da logo. Pode aumentar ou diminuir esse número */
+  height: auto;
 }
