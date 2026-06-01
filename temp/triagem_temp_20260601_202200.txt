@@ -1,0 +1,12 @@
+{
+    "idade": "34",
+    "genero": "Feminino",
+    "sintomas": "Dor de Cabeça",
+    "sinais_vitais": {
+        "temperatura": "37",
+        "pressao": "14,1",
+        "frequencia": "85",
+        "glicemia": "135"
+    },
+    "medicamentos": "LILILI"
+}
