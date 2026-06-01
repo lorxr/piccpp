@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Recuperar Senha - Sistema de Triagem</title>
+    <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='imagens/logo.jpeg') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .container-clean { max-width: 400px; margin: 100px auto; padding: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .opcao-recuperacao { display: flex; align-items: center; gap: 10px; margin: 20px 0; padding: 15px; border: 1px solid #eee; border-radius: 8px; cursor: pointer; }
+        .opcao-recuperacao:hover { background-color: #f0f7ff; }
+    </style>
+
+</head>
+<body style="background-color: #f8f9fa;">
+    <div class="container-clean">
+        <h2 style="text-align: center;">Como deseja receber o código?</h2>
+        
+        <form action="/enviar-codigo" method="POST">
+            <label class="opcao-recuperacao">
+                <input type="radio" name="metodo" value="email" checked>
+                <span>E-mail: <strong>{{ email }}</strong></span>
+            </label>
+
+            <label class="opcao-recuperacao">
+                <input type="radio" name="metodo" value="sms">
+                <span>SMS: <strong>{{ sms }}</strong></span>
+            </label>
+
+            <button type="submit" style="width:100%; padding:12px; background:#052D73; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">
+                Enviar Código
+            </button>
+        </form>
+    </div>
+</body>
+</html>

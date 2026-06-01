@@ -69,12 +69,8 @@ body {
 
 .lado-info-login,
 .login-info {
-  background: linear-gradient(
-    160deg,
-    var(--cor-azul) 0%,
-    var(--cor-azul-escuro) 45%,
-    var(--cor-verde) 100%
-  );
+  /* Aqui estão as suas cores novas! */
+  background: linear-gradient(135deg, #052D73 0%, #2DAFB9 100%);
   color: white;
   padding: 48px;
   display: flex;
@@ -1737,4 +1733,18 @@ dialog::backdrop {
     color: var(--cor-texto-claro);
     font-size: 12px;
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2f51ae29e5e418bdeafa2f040cb72cdba8db8973
+}
+
+/* ==================================================
+   LOGO CENTRALIZADA NO LOGIN
+   ================================================== */
+.logo-imagem-centro {
+  display: block;
+  margin: 0 auto 24px auto; /* Centraliza nas laterais e dá um respiro embaixo */
+  max-width: 220px; /* Tamanho da logo. Pode aumentar ou diminuir esse número */
+  height: auto;
 }

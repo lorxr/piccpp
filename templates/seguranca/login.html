@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Login - Sistema de Triagem</title>
+    <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='imagens/logo.jpeg') }}">
 
     <link
       rel="stylesheet"
@@ -13,10 +14,39 @@
   </head>
 
   <body class="corpo-login">
+    {% if erro %}
+    <div id="popup-erro" style="
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #052D73;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        z-index: 1000;
+        font-family: sans-serif;
+    ">
+        <span>{{ erro }}</span>
+        <button onclick="fecharPopup()" style="
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0;
+        ">&times;</button>
+    </div>
+    {% endif %}
     <main class="tela-login">
       <section class="cartao-login">
         <div class="lado-info-login">
-          <div class="logo-login">+</div>
+          <img src="{{ url_for('static', filename='imagens/Logo-SF.png') }}" alt="Logo" class="logo-imagem-centro">
 
           <h1>ALVORMED.AI</h1>
 
@@ -118,7 +148,7 @@
 
             <button type="submit" class="botao-login">Entrar</button>
 
-            <a href="#" class="link-esqueci-senha"> Esqueci minha senha </a>
+            <a href="/esqueci-senha" class="link-esqueci-senha"> Esqueci minha senha </a>
           </form>
         </div>
       </section>
@@ -138,6 +168,14 @@
           campoSenha.type = "password";
           iconeOlhoAberto.classList.remove("icone-escondido");
           iconeOlhoFechado.classList.add("icone-escondido");
+        }
+      }
+
+      // Função para fechar o popup de erro
+      function fecharPopup() {
+        const popup = document.getElementById("popup-erro");
+        if (popup) {
+          popup.style.display = "none";
         }
       }
     </script>

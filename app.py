@@ -7,6 +7,71 @@ app = Flask(__name__)
 # Chave usada pelo Flask para controlar a sessão do usuário.
 # Depois o ideal é colocar isso em um arquivo .env.
 app.secret_key = "chave-secreta-do-projeto-pi"
+<<<<<<< HEAD
+
+
+# ==================================================
+# VERIFICA SE O USUÁRIO ESTÁ LOGADO
+# ==================================================
+
+def login_obrigatorio(funcao):
+    @wraps(funcao)
+    def wrapper(*args, **kwargs):
+        if "usuario_logado" not in session:
+            return redirect(url_for("login"))
+
+        return funcao(*args, **kwargs)
+
+    return wrapper
+
+
+# ==================================================
+# VERIFICA SE O USUÁRIO TEM PERMISSÃO
+# Exemplo: enfermeiro, admin, recepcao etc.
+# ==================================================
+
+def permissao_obrigatoria(tipo_permitido):
+    def decorator(funcao):
+        @wraps(funcao)
+        def wrapper(*args, **kwargs):
+            if "usuario_logado" not in session:
+                return redirect(url_for("login"))
+
+            if session.get("tipo_usuario") != tipo_permitido:
+                abort(403)
+
+            return funcao(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+# ==================================================
+# LOGIN
+# ==================================================
+=======
+>>>>>>> 2f51ae29e5e418bdeafa2f040cb72cdba8db8973
+
+# ==================================================
+# FUNÇÕES DE MASCARAMENTO 
+# ==================================================
+
+def mascarar_email(email):
+    if not email or "@" not in email:
+        return ""
+    usuario, dominio = email.split("@", 1)
+    if len(usuario) <= 3:
+        return usuario[0] + "***@" + dominio
+    return usuario[:3] + "*" * (len(usuario) - 3) + "@" + dominio
+
+def mascarar_telefone(tel):
+    if not tel:
+        return ""
+    numeros = "".join(c for c in tel if c.isdigit())
+    if len(numeros) < 5:
+        return "****"
+    return numeros[:2] + "*" * (len(numeros) - 5) + numeros[-3:]
 
 
 # ==================================================
@@ -50,11 +115,6 @@ def permissao_obrigatoria(tipo_permitido):
 # LOGIN
 # ==================================================
 
-@app.route("/")
-def abrir_login():
-    return render_template("seguranca/login.html")
-
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -69,12 +129,89 @@ def login():
 
             return redirect(url_for("inicio"))
 
+<<<<<<< HEAD
         return "Usuário ou senha inválidos"
+=======
+        # SE ERRAR A SENHA, RENDERIZA O LOGIN NOVAMENTE E ENVIA O ERRO
+        return render_template("seguranca/login.html", erro="Usuário ou Senha inválidos")
+>>>>>>> 2f51ae29e5e418bdeafa2f040cb72cdba8db8973
 
     return render_template("seguranca/login.html")
 
 
 # ==================================================
+<<<<<<< HEAD
+=======
+# RECUPERAR SENHA
+# ==================================================
+
+@app.route("/esqueci-senha", methods=["GET", "POST"])
+def esqueci_senha():
+    if request.method == "POST":
+        usuario_digitado = request.form.get("usuarioRecuperar")
+        
+        # Simulando a busca no banco de dados 
+        
+        if usuario_digitado == "admin":
+            # Dados originais vindos do banco de dados fictício
+            email_original = "testandoteste@gmail.com"
+            telefone_original = "55996988211"
+            
+            # Aplicando o mascaramento 
+            email_censurado = mascarar_email(email_original)
+            sms_censurado = mascarar_telefone(telefone_original)
+            
+            return render_template("seguranca/escolher_metodo.html", 
+                                   email=email_censurado, 
+                                   sms=sms_censurado)
+                                   
+        return render_template("seguranca/esqueci_senha.html", erro="Usuário não encontrado.")
+        
+    return render_template("seguranca/esqueci_senha.html")
+
+
+# ==================================================
+# ENVIAR CÓDIGO
+# ==================================================
+
+@app.route("/enviar-codigo", methods=["POST"])
+def enviar_codigo():
+    # Aqui o sistema leria o "metodo" (email ou sms) 
+    # e faria o disparo real usando uma API.
+    metodo_escolhido = request.form.get("metodo")
+    print(f"Enviando código de verificação por: {metodo_escolhido}")
+
+    # Abre a tela para o usuário digitar o código e a nova senha
+    return render_template("seguranca/redefinir_senha.html")
+
+
+# ==================================================
+# NOVA SENHA
+# ==================================================
+
+@app.route("/salvar-nova-senha", methods=["POST"])
+def salvar_nova_senha():
+    codigo = request.form.get("codigoVerificacao")
+    nova_senha = request.form.get("novaSenha")
+    confirmar_senha = request.form.get("confirmarSenha")
+
+    # 1. Verifica se as duas senhas digitadas são iguais
+    if nova_senha != confirmar_senha:
+        return render_template("seguranca/redefinir_senha.html", erro="As senhas não coincidem. Tente novamente.")
+
+    # 2. Simulação de verificação de código (vamos fingir que o código certo é "123456")
+    if codigo != "123456":
+        return render_template("seguranca/redefinir_senha.html", erro="Código de verificação inválido.")
+
+    # 3. Sucesso! Aqui o sistema salvaria a senha no banco de dados.
+    print("Senha alterada com sucesso no banco de dados!")
+
+    # 4. Redireciona de volta para a tela de login original
+    return redirect(url_for("login"))
+
+
+# ==================================================
+>>>>>>> 2f51ae29e5e418bdeafa2f040cb72cdba8db8973
 # LOGOUT
 # ==================================================
 
