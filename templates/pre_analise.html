@@ -1,0 +1,105 @@
+{% extends "index.html" %} {% block conteudo %}
+
+<div class="pagina-pre-analise">
+  <div class="cartao-pre-analise tela-foco-llm">
+    <div class="cabecalho-pre-analise compacto">
+      <div>
+        <span class="system-badge">Pré-análise gerada</span>
+        <h2>Pré-análise da Triagem</h2>
+      </div>
+
+      <span class="status-pre-analise"> Aguardando revisão </span>
+    </div>
+
+    <div class="resumo-atendimento-pequeno">
+      <div>
+        <span>Paciente</span>
+        <strong>{{ paciente_nome }}</strong>
+      </div>
+
+      <div>
+        <span>Temperatura</span>
+        <strong>{{ temperatura }} °C</strong>
+      </div>
+
+      <div>
+        <span>Pressão</span>
+        <strong>{{ pressao }}</strong>
+      </div>
+
+      <div>
+        <span>Freq. cardíaca</span>
+        <strong>{{ frequencia }} BPM</strong>
+      </div>
+
+      <div>
+        <span>Glicemia</span>
+        <strong>{{ glicemia }} mg/dL</strong>
+      </div>
+    </div>
+
+    <form action="/salvar-triagem" method="POST" class="form-pre-analise">
+      <input type="hidden" name="paciente_id" value="{{ paciente_id }}" />
+      <input type="hidden" name="paciente_nome" value="{{ paciente_nome }}" />
+      <input type="hidden" name="temperatura" value="{{ temperatura }}" />
+      <input type="hidden" name="pressao" value="{{ pressao }}" />
+      <input type="hidden" name="frequencia" value="{{ frequencia }}" />
+      <input type="hidden" name="glicemia" value="{{ glicemia }}" />
+      <input type="hidden" name="medicamentos" value="{{ medicamentos }}" />
+      <input type="hidden" name="sintomas" value="{{ sintomas }}" />
+      <input type="hidden" name="palavras_chave" value="{{ palavras_chave_json }}" />
+
+      <div class="area-texto-llm">
+        <div class="topo-texto-llm">
+          <div>
+            <h3>Texto gerado pela LLM</h3>
+            <p>Revise a pré-análise antes de salvar a triagem.</p>
+          </div>
+
+          <button
+            type="button"
+            id="btnEditarAnalise"
+            class="btn-health-outline"
+            onclick="habilitarEdicaoAnalise()"
+          >
+            Editar texto
+          </button>
+        </div>
+
+        <textarea
+          id="preAnalise"
+          name="pre_analise"
+          class="textarea-pre-analise textarea-grande-llm"
+          readonly
+        >
+{{ pre_analise }}</textarea
+        >
+        >
+      </div>
+
+      <div class="botoes-pre-analise">
+        <a href="/nova-triagem" class="btn-health-outline"> Voltar </a>
+
+        <button type="submit" class="btn-health">Salvar triagem</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function habilitarEdicaoAnalise() {
+    const campoAnalise = document.getElementById("preAnalise");
+    const botaoEditar = document.getElementById("btnEditarAnalise");
+
+    if (campoAnalise.hasAttribute("readonly")) {
+      campoAnalise.removeAttribute("readonly");
+      campoAnalise.focus();
+      botaoEditar.innerText = "Bloquear edição";
+    } else {
+      campoAnalise.setAttribute("readonly", true);
+      botaoEditar.innerText = "Editar texto";
+    }
+  }
+</script>
+
+{% endblock %}

@@ -7,6 +7,51 @@ app = Flask(__name__)
 # Chave usada pelo Flask para controlar a sessão do usuário.
 # Depois o ideal é colocar isso em um arquivo .env.
 app.secret_key = "chave-secreta-do-projeto-pi"
+<<<<<<< HEAD
+
+
+# ==================================================
+# VERIFICA SE O USUÁRIO ESTÁ LOGADO
+# ==================================================
+
+def login_obrigatorio(funcao):
+    @wraps(funcao)
+    def wrapper(*args, **kwargs):
+        if "usuario_logado" not in session:
+            return redirect(url_for("login"))
+
+        return funcao(*args, **kwargs)
+
+    return wrapper
+
+
+# ==================================================
+# VERIFICA SE O USUÁRIO TEM PERMISSÃO
+# Exemplo: enfermeiro, admin, recepcao etc.
+# ==================================================
+
+def permissao_obrigatoria(tipo_permitido):
+    def decorator(funcao):
+        @wraps(funcao)
+        def wrapper(*args, **kwargs):
+            if "usuario_logado" not in session:
+                return redirect(url_for("login"))
+
+            if session.get("tipo_usuario") != tipo_permitido:
+                abort(403)
+
+            return funcao(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+# ==================================================
+# LOGIN
+# ==================================================
+=======
+>>>>>>> 2f51ae29e5e418bdeafa2f040cb72cdba8db8973
 
 # ==================================================
 # FUNÇÕES DE MASCARAMENTO 
@@ -84,13 +129,19 @@ def login():
 
             return redirect(url_for("inicio"))
 
+<<<<<<< HEAD
+        return "Usuário ou senha inválidos"
+=======
         # SE ERRAR A SENHA, RENDERIZA O LOGIN NOVAMENTE E ENVIA O ERRO
         return render_template("seguranca/login.html", erro="Usuário ou Senha inválidos")
+>>>>>>> 2f51ae29e5e418bdeafa2f040cb72cdba8db8973
 
     return render_template("seguranca/login.html")
 
 
 # ==================================================
+<<<<<<< HEAD
+=======
 # RECUPERAR SENHA
 # ==================================================
 
@@ -160,6 +211,7 @@ def salvar_nova_senha():
 
 
 # ==================================================
+>>>>>>> 2f51ae29e5e418bdeafa2f040cb72cdba8db8973
 # LOGOUT
 # ==================================================
 

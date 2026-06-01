@@ -3,22 +3,24 @@
 <div class="triagem-page">
   <div class="page-header">
     <div>
-      <span class="system-badge">Nova Triagem</span>
-      <!-- <h1>Nova Triagem</h1> -->
-      <!-- <p>
+      <span class="system-badge">Módulo de Enfermagem</span>
+
+      <h1>Nova Triagem</h1>
+
+      <p>
         Registre os dados iniciais do paciente para apoiar a pré-consulta e a
         classificação do atendimento.
-      </p> -->
+      </p>
     </div>
 
-    <a href="/" class="btn-health-outline"> Voltar ao início </a>
+    <a href="/inicio" class="btn-health-outline"> Voltar ao início </a>
   </div>
 
   <div class="triagem-card">
     <div class="triagem-card-header">
       <div>
         <h2>Ficha de atendimento</h2>
-        <p>Preencha as etapas abaixo para concluir a triagem.</p>
+        <p>Preencha as etapas abaixo para gerar a pré-análise da triagem.</p>
       </div>
 
       <div class="triagem-status">Em preenchimento</div>
@@ -65,7 +67,7 @@
 
           <div class="form-group">
             <label for="glicemia">Glicemia (mg/dL)</label>
-            <input type="number" id="glicemia" name="glicemia"   />
+            <input type="number" id="glicemia" name="glicemia" />
           </div>
         </div>
 
@@ -93,6 +95,7 @@
           </div>
 
           <input type="hidden" id="inputPacienteId" name="paciente_id" />
+          <input type="hidden" id="inputPacienteNome" name="paciente_nome" />
 
           <button
             type="button"
@@ -108,6 +111,27 @@
           <textarea id="sintomas" name="sintomas" rows="6" required></textarea>
         </div>
 
+        <div class="form-group">
+          <label for="inputPalavraChave">Palavras-chave</label>
+
+          <div class="campo-tags" onclick="focarCampoTag()">
+            <div id="listaTags" class="lista-tags"></div>
+
+            <input
+              type="text"
+              id="inputPalavraChave"
+              placeholder="Digite uma palavra e aperte Enter ou ;"
+              autocomplete="off"
+            />
+          </div>
+
+          <input type="hidden" id="palavrasChave" name="palavras_chave" />
+
+          <small class="ajuda-tags">
+            Use Enter ou ponto e vírgula para adicionar uma palavra-chave.
+          </small>
+        </div>
+
         <div class="form-actions form-actions-between">
           <button
             type="button"
@@ -117,9 +141,7 @@
             Voltar
           </button>
 
-          <button type="submit" class="btn-health">
-            Salvar e Gerar Triagem
-          </button>
+          <button type="submit" class="btn-health">Gerar Triagem</button>
         </div>
       </div>
     </form>
@@ -242,6 +264,7 @@
   function selecionarPaciente(id, nome) {
     document.getElementById("nomePacienteDisplay").innerText = nome;
     document.getElementById("inputPacienteId").value = id;
+    document.getElementById("inputPacienteNome").value = nome;
     fecharModal();
   }
 
@@ -285,6 +308,99 @@
 
     selecionarPaciente(99, nome);
   }
+
+  let listaPalavrasChave = [];
+
+  function focarCampoTag() {
+    document.getElementById("inputPalavraChave").focus();
+  }
+
+  function adicionarPalavraChave(valor) {
+    let palavra = valor.trim();
+
+    if (palavra === "") {
+      return;
+    }
+
+    palavra = palavra.replace(";", "");
+
+    const jaExiste = listaPalavrasChave.some(
+      (item) => item.toLowerCase() === palavra.toLowerCase(),
+    );
+
+    if (jaExiste) {
+      return;
+    }
+
+    listaPalavrasChave.push(palavra);
+    atualizarTagsNaTela();
+  }
+
+  function removerPalavraChave(indice) {
+    listaPalavrasChave.splice(indice, 1);
+    atualizarTagsNaTela();
+  }
+
+  function atualizarTagsNaTela() {
+    const listaTags = document.getElementById("listaTags");
+    const inputHidden = document.getElementById("palavrasChave");
+
+    listaTags.innerHTML = "";
+
+    listaPalavrasChave.forEach((palavra, indice) => {
+      const tag = document.createElement("span");
+      tag.className = "tag-palavra-chave";
+
+      tag.innerHTML = `
+        ${palavra}
+        <button type="button" onclick="removerPalavraChave(${indice})">
+          ×
+        </button>
+      `;
+
+      listaTags.appendChild(tag);
+    });
+
+    inputHidden.value = JSON.stringify(listaPalavrasChave);
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const inputTag = document.getElementById("inputPalavraChave");
+
+    if (!inputTag) {
+      return;
+    }
+
+    inputTag.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" || event.key === ";") {
+        event.preventDefault();
+
+        adicionarPalavraChave(inputTag.value);
+        inputTag.value = "";
+      }
+    });
+
+    inputTag.addEventListener("input", function () {
+      if (inputTag.value.includes(";")) {
+        const partes = inputTag.value.split(";");
+
+        partes.forEach((parte, indice) => {
+          if (indice < partes.length - 1) {
+            adicionarPalavraChave(parte);
+          }
+        });
+
+        inputTag.value = partes[partes.length - 1];
+      }
+    });
+
+    inputTag.addEventListener("blur", function () {
+      if (inputTag.value.trim() !== "") {
+        adicionarPalavraChave(inputTag.value);
+        inputTag.value = "";
+      }
+    });
+  });
 </script>
 
 {% endblock %}
