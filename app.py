@@ -503,6 +503,137 @@ def salvar_triagem():
 
 
 # ==================================================
+# PACIENTES
+# ==================================================
+
+ARQUIVO_PACIENTES = PASTA_TEMP_TRIAGEM / "pacientes.json"
+
+
+def carregar_pacientes():
+    """
+    Carrega os pacientes salvos temporariamente em JSON.
+    Depois pode ser substituído por banco de dados.
+    """
+    PASTA_TEMP_TRIAGEM.mkdir(parents=True, exist_ok=True)
+
+    if not ARQUIVO_PACIENTES.exists():
+        return []
+
+    try:
+        with open(ARQUIVO_PACIENTES, "r", encoding="utf-8") as arquivo:
+            dados = json.load(arquivo)
+
+            if isinstance(dados, list):
+                return dados
+
+            return []
+
+    except json.JSONDecodeError:
+        return []
+
+
+def salvar_pacientes(pacientes):
+    """
+    Salva a lista de pacientes em arquivo JSON temporário.
+    """
+    PASTA_TEMP_TRIAGEM.mkdir(parents=True, exist_ok=True)
+
+    with open(ARQUIVO_PACIENTES, "w", encoding="utf-8") as arquivo:
+        json.dump(pacientes, arquivo, ensure_ascii=False, indent=4)
+
+
+def gerar_id_paciente():
+    """
+    Gera um ID simples para o paciente.
+    """
+    return "PAC" + datetime.now().strftime("%Y%m%d%H%M%S%f")
+
+
+def formatar_cpf(cpf_numerico):
+    """
+    Recebe somente números e retorna o CPF formatado.
+    Exemplo: 12345678901 -> 123.456.789-01
+    """
+    return f"{cpf_numerico[:3]}.{cpf_numerico[3:6]}.{cpf_numerico[6:9]}-{cpf_numerico[9:]}"
+
+
+@app.route("/cadastrar-paciente", methods=["GET", "POST"])
+@login_obrigatorio
+def cadastrar_paciente():
+    if request.method == "POST":
+        pacientes = carregar_pacientes()
+
+        nome_completo = request.form.get("nome_completo", "").strip()
+        cpf = request.form.get("cpf", "").strip()
+        cpf_numerico = "".join(filter(str.isdigit, cpf))
+
+        data_nascimento = request.form.get("data_nascimento", "").strip()
+        idade = request.form.get("idade", "").strip()
+        genero = request.form.get("genero", "").strip()
+        telefone = request.form.get("telefone", "").strip()
+        endereco = request.form.get("endereco", "").strip()
+        cidade = request.form.get("cidade", "").strip()
+        alergias = request.form.get("alergias", "").strip()
+        medicamentos = request.form.get("medicamentos", "").strip()
+        observacoes = request.form.get("observacoes", "").strip()
+
+        if not nome_completo:
+            return render_template(
+                "cadastrar_paciente.html",
+                erro="O nome completo do paciente é obrigatório."
+            )
+
+        if not cpf_numerico:
+            return render_template(
+                "cadastrar_paciente.html",
+                erro="O CPF do paciente é obrigatório."
+            )
+
+        if len(cpf_numerico) != 11:
+            return render_template(
+                "cadastrar_paciente.html",
+                erro="O CPF deve conter exatamente 11 dígitos."
+            )
+
+        cpf_formatado = formatar_cpf(cpf_numerico)
+
+        for paciente in pacientes:
+            cpf_salvo = paciente.get("cpf", "")
+            cpf_salvo_numerico = "".join(filter(str.isdigit, cpf_salvo))
+
+            if cpf_salvo_numerico == cpf_numerico:
+                return render_template(
+                    "cadastrar_paciente.html",
+                    erro="Já existe um paciente cadastrado com este CPF."
+                )
+
+        novo_paciente = {
+            "id": gerar_id_paciente(),
+            "nome_completo": nome_completo,
+            "cpf": cpf_formatado,
+            "data_nascimento": data_nascimento,
+            "idade": idade,
+            "genero": genero,
+            "telefone": telefone,
+            "endereco": endereco,
+            "cidade": cidade,
+            "alergias": alergias,
+            "medicamentos": medicamentos,
+            "observacoes": observacoes,
+            "data_cadastro": datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        }
+
+        pacientes.append(novo_paciente)
+        salvar_pacientes(pacientes)
+
+        return render_template(
+            "cadastrar_paciente.html",
+            sucesso="Paciente cadastrado com sucesso."
+        )
+
+    return render_template("cadastrar_paciente.html")
+
+# ==================================================
 # INICIA O PROJETO
 # ==================================================
 
