@@ -1,37 +1,47 @@
 <!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Recuperar Senha - Sistema de Triagem</title>
-    <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='imagens/logo.jpeg') }}">
+    <title>Escolher Método - Alvormed.AI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-    <style>
-        .container-clean { max-width: 400px; margin: 100px auto; padding: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .opcao-recuperacao { display: flex; align-items: center; gap: 10px; margin: 20px 0; padding: 15px; border: 1px solid #eee; border-radius: 8px; cursor: pointer; }
-        .opcao-recuperacao:hover { background-color: #f0f7ff; }
-    </style>
-
 </head>
-<body style="background-color: #f8f9fa;">
+<body class="corpo-login">
+    
     <div class="container-clean">
-        <h2 style="text-align: center;">Como deseja receber o código?</h2>
-        
+        <h2>Onde devemos enviar o código?</h2>
+        <p class="texto-instrucao">
+            Encontramos estes contatos vinculados ao seu usuário. Escolha uma opção:
+        </p>
+
         <form action="/enviar-codigo" method="POST">
-            <label class="opcao-recuperacao">
-                <input type="radio" name="metodo" value="email" checked>
-                <span>E-mail: <strong>{{ email }}</strong></span>
-            </label>
+            
+            <div class="form-group" style="text-align: left; background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 12px; border: 1px solid #e2e8f0;">
+                <label style="cursor: pointer; display: flex; align-items: center; font-weight: normal; margin: 0;">
+                    <input type="radio" name="metodo" value="email" required style="margin-right: 12px; transform: scale(1.3);">
+                    <div>
+                        <strong style="display: block; color: #333; font-size: 15px;">E-mail</strong>
+                        <span style="font-size: 14px; color: #666;">{{ email }}</span>
+                    </div>
+                </label>
+            </div>
 
-            <label class="opcao-recuperacao">
-                <input type="radio" name="metodo" value="sms">
-                <span>SMS: <strong>{{ sms }}</strong></span>
-            </label>
+            <div class="form-group" style="text-align: left; background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 24px; border: 1px solid #e2e8f0;">
+                <label style="cursor: pointer; display: flex; align-items: center; font-weight: normal; margin: 0;">
+                    <input type="radio" name="metodo" value="sms" required style="margin-right: 12px; transform: scale(1.3);">
+                    <div>
+                        <strong style="display: block; color: #333; font-size: 15px;">SMS (Telefone)</strong>
+                        <span style="font-size: 14px; color: #666;">{{ sms }}</span>
+                    </div>
+                </label>
+            </div>
 
-            <button type="submit" style="width:100%; padding:12px; background:#052D73; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">
-                Enviar Código
-            </button>
+            <button type="submit" class="btn-success">Enviar Código</button>
         </form>
+
+        <br>
+        <a href="/login" class="link-cancelar">Cancelar e voltar</a>
     </div>
+
 </body>
 </html>
