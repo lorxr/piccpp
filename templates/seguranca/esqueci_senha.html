@@ -1,32 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Recuperar Senha - Sistema de Triagem</title>
+    <title>Esqueci Minha Senha - Alvormed.AI</title>
     <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='imagens/logo.jpeg') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-    <style>
-        
-        .container-clean { max-width: 400px; margin: 100px auto; padding: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
-        .btn-link { background: #052D73; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; width: 100%; }
-        .input-clean { width: 100%; padding: 12px; margin: 20px 0; border: 1px solid #ddd; border-radius: 6px; }
-    </style>
-
 </head>
-<body style="background-color: #f8f9fa;">
+<body class="corpo-login">
+    
     <div class="container-clean">
-        <h2>Recuperar Conta</h2>
-        <p>Informe seu nome de usuário para continuar.</p>
-        
-        {% if erro %} <p style="color: red;">{{ erro }}</p> {% endif %}
+        <h2>Recuperar Senha</h2>
+        <p class="texto-instrucao">
+            Informe o seu usuário para enviarmos as opções de recuperação.
+        </p>
 
-        <form method="POST">
-            <input type="text" name="usuarioRecuperar" class="input-clean" placeholder="Nome de usuário" required>
-            <button type="submit" class="btn-link">Verificar Usuário</button>
+        {% if erro %}
+            <div class="alerta-erro">
+                {{ erro }}
+            </div>
+        {% endif %}
+
+        <form action="/esqueci-senha" method="POST">
+            <div class="form-group" style="text-align: left;">
+                <label for="usuarioRecuperar">Usuário</label>
+                <input type="text" id="usuarioRecuperar" name="usuarioRecuperar" class="input-clean" placeholder="Digite seu usuário" required autocomplete="off">
+            </div>
+
+            <button type="submit" class="btn-success">Avançar</button>
         </form>
+
         <br>
-        <a href="/login" style="color: #666; text-decoration: none; font-size: 14px;">Voltar para o login</a>
+        <a href="/login" class="link-cancelar">Voltar ao login</a>
     </div>
+
 </body>
 </html>

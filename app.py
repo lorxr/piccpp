@@ -205,7 +205,7 @@ def login():
         senha = request.form.get("senhaLogin")
 
         # Exemplo simples para teste.
-        # Depois você troca isso por consulta no banco.
+        # Depois trocar isso por consulta no banco.
         if usuario == "admin" and senha == "123":
             session["usuario_logado"] = usuario
             session["tipo_usuario"] = "enfermeiro"
@@ -218,6 +218,44 @@ def login():
         )
 
     return render_template("seguranca/login.html")
+
+
+# ==================================================
+# TELA LISTA DE PACIENTES
+# ==================================================
+
+@app.route("/pacientes")
+@login_obrigatorio
+
+def lista_pacientes():
+    
+    # Dados para teste mudar depois
+    pacientes_cadastrados = [
+        {"id": 1, "nome": "Carlos Eduardo Silva", "idade": 45, "genero": "Masculino", "cpf": "111.222.333-44"},
+        {"id": 2, "nome": "Ana Maria Ferreira", "idade": 28, "genero": "Feminino", "cpf": "555.666.777-88"},
+        {"id": 3, "nome": "Roberto Alves", "idade": 34, "genero": "Masculino", "cpf": "999.888.777-66"},
+        {"id": 4, "nome": "Juliana Costa", "idade": 52, "genero": "Feminino", "cpf": "444.333.222-11"}
+    ]
+    
+    return render_template("pacientes.html", pacientes=pacientes_cadastrados)
+
+# ==================================================
+# TELA DO MEDICO
+# ==================================================
+
+
+@app.route("/medico")
+@login_obrigatorio  
+
+def fila_medico():
+    # Dados para teste
+    pacientes_espera = [
+        {"id": 1, "nome": "Carlos Eduardo Silva", "classificacao": "Emergência", "cor": "#e53935", "tempo": 12, "sintoma": "Dor intensa no peito e sudorese"},
+        {"id": 2, "nome": "Marcos Paulo Souza", "classificacao": "Urgência", "cor": "#fdd835", "tempo": 35, "sintoma": "Falta de ar moderada"},
+        {"id": 3, "nome": "Roberto Alves", "classificacao": "Pouco Urgente", "cor": "#43a047", "tempo": 20, "sintoma": "Febre de 39 graus e tosse"}
+    ]
+    
+    return render_template("medico.html", pacientes=pacientes_espera)
 
 
 # ==================================================
@@ -639,3 +677,4 @@ def cadastrar_paciente():
 
 if __name__ == "__main__":
     app.run(debug=False)
+

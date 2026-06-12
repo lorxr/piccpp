@@ -1,65 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+    
 <head>
     <meta charset="UTF-8">
     <title>Recuperar Senha - Sistema de Triagem</title>
     <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='imagens/logo.jpeg') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-    <style>
-        .container-clean { 
-            max-width: 400px; 
-            margin: 80px auto; 
-            padding: 40px; 
-            background: white; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-            text-align: center; 
-        }
-        .form-group { 
-            text-align: left; 
-            margin-bottom: 15px; 
-        }
-        label { 
-            font-size: 14px; 
-            font-weight: bold; 
-            color: #444; 
-            display: block;
-            margin-bottom: 5px;
-        }
-        .input-clean { 
-            width: 100%; 
-            padding: 12px; 
-            border: 1px solid #ccc; 
-            border-radius: 6px; 
-            box-sizing: border-box; 
-        }
-        .btn-success { 
-            background: #052D73; 
-            color: white; 
-            padding: 12px 20px; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            width: 100%; 
-            font-weight: bold; 
-            margin-top: 15px; 
-            font-size: 16px;
-        }
-        .btn-success:hover {
-            background: #2DAFB9;
-        }
-    </style>
 </head>
-<body style="background-color: #f8f9fa;">
+
+<body class="corpo-login">
+    
     <div class="container-clean">
         <h2>Criar Nova Senha</h2>
-        <p style="font-size: 14px; color: #666; margin-bottom: 25px;">
+        <p class="texto-instrucao">
             Digite o código de 6 dígitos que enviamos para você e defina sua nova senha.
         </p>
         
         {% if erro %} 
-            <div style="background-color: #ffe6e6; color: #052D73; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-size: 14px; font-weight: bold;">
+            <div class="alerta-erro">
                 {{ erro }}
             </div> 
         {% endif %}
@@ -85,7 +43,8 @@
         </form>
         
         <br>
-        <a href="/login" style="color: #888; text-decoration: none; font-size: 13px;">Cancelar e voltar ao login</a>
+        <a href="/login" class="link-cancelar">Cancelar e voltar ao login</a>
     </div>
+
 </body>
 </html>
