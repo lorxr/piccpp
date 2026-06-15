@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Módulo do Médico - Alvormed.AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <nav class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <img src="{{ url_for('static', filename='imagens/Logo-SF.png') }}" alt="Logo">
+          </div>
+          <h2>Alvormed.AI</h2>
+        </div>
+        <hr />
+        <ul>
+          <li><a href="/inicio"><span>Início</span></a></li>
+          <li><a href="/nova-triagem"><span>Nova Triagem</span></a></li>
+          <li><a href="/cadastrar-paciente"><span>Cadastrar Paciente</span></a></li>
+          <li><a href="/medico" style="background: var(--gradiente-oficial); color: white; border-radius: 8px;"><span>Atendimento</span></a></li>
+          <li><a href="/sair"><span>Sair</span></a></li>
+        </ul>
+      </nav>
+
+      <main class="main-content" style="height: auto; min-height: 100vh; overflow-y: auto; width: 100%;">
+        <header class="top-header">
+          <div>
+            <h3>Fila de Atendimento</h3>
+          </div>
+        </header>
+
+        <section class="content" style="width: 100%;">
+          {% block conteudo %}
+          
+          <div style="display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 1180px; margin: 0 auto; padding-top: 20px;">
+            
+            <h2 style="color: #333;">Pacientes Aguardando</h2>
+            <p style="color: #666; margin-bottom: 10px;">Selecione um paciente para visualizar os dados da triagem e iniciar a consulta.</p>
+
+            <input type="text" id="buscaPaciente" placeholder="Buscar paciente por nome..." 
+                   style="width: 100%; padding: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; margin-bottom: 20px; outline: none; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+
+            <div id="containerPacientes" style="display: flex; flex-direction: column; gap: 15px; width: 100%;">
+              {% for paciente in pacientes %}
+              <div class="card-paciente-fila" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; border-left: 6px solid {{ paciente.cor }};">
+                
+                <div class="info-paciente">
+                  <h3 class="nome-paciente" style="margin: 0 0 5px 0; color: #222;">{{ paciente.nome }}</h3>
+                  <p style="margin: 0; color: #555; font-size: 14px;">
+                    <strong>Classificação:</strong> <span style="color: {{ paciente.cor }}; font-weight: bold;">{{ paciente.classificacao }}</span> | 
+                    <strong>Tempo de espera:</strong> {{ paciente.tempo }} min
+                  </p>
+                  <p style="margin: 8px 0 0 0; color: #777; font-size: 14px;">
+                    <em>Sintoma principal: {{ paciente.sintoma }}</em>
+                  </p>
+                </div>
+
+                <div>
+                  <a href="/consulta/{{ paciente.id }}" style="background: #ffffff; color: #000000; padding: 10px 20px; text-decoration: none; border-radius: 8px; font-weight: bold; border: 2px solid #ffffff; display: inline-block;">
+                    Iniciar Consulta
+                  </a>
+                </div>
+
+              </div>
+              {% else %}
+              <div style="text-align: center; padding: 40px; background: white; border-radius: 12px;">
+                <h3 style="color: #888;">Nenhum paciente na fila no momento.</h3>
+              </div>
+              {% endfor %}
+            </div>
+
+          </div>
+
+          <script>
+            document.getElementById('buscaPaciente').addEventListener('keyup', function() {
+              let filtro = this.value.toLowerCase(); 
+              let cartoes = document.querySelectorAll('.card-paciente-fila'); 
+
+              cartoes.forEach(function(cartao) {
+                let nome = cartao.querySelector('.nome-paciente').innerText.toLowerCase();
+                
+                if (nome.includes(filtro)) {
+                  cartao.style.display = 'flex';
+                } else {
+                  cartao.style.display = 'none';
+                }
+              });
+            });
+          </script>
+
+          {% endblock %}
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
