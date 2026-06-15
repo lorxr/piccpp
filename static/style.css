@@ -70,7 +70,7 @@ body {
 .lado-info-login,
 .login-info {
   /* Aqui estão as suas cores novas! */
-  background: linear-gradient(135deg, #052D73 0%, #2DAFB9 100%);
+  background: linear-gradient(135deg, #052d73 0%, #2dafb9 100%);
   color: white;
   padding: 48px;
   display: flex;
@@ -1732,7 +1732,6 @@ dialog::backdrop {
     color: var(--cor-texto-claro);
     font-size: 12px;
   }
-
 }
 
 /* ==================================================
@@ -1880,4 +1879,313 @@ dialog::backdrop {
 .main-content, .content {
     overflow-y: auto !important;
     height: 100vh; 
+}
+   TELA: CADASTRAR PACIENTE
+   Versão compacta sem scroll
+
+.pagina-cadastro-paciente {
+  height: calc(100vh - 68px);
+  overflow: hidden;
+  padding: 8px 56px 16px 56px;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #eef6ff 0%, #f5fbf8 100%);
+}
+
+/* Cabeçalho da página */
+
+.cadastro-paciente-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 12px;
+}
+
+.system-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: #d9e9ff;
+  color: #1263ff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.cadastro-paciente-header h1 {
+  margin: 0 0 6px 0;
+  color: #172033;
+  font-size: 40px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.cadastro-paciente-header p {
+  margin: 0;
+  color: #607086;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.btn-health-outline {
+  height: 42px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #b9d4ff;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #1263ff;
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: 0.2s ease;
+}
+
+.btn-health-outline:hover {
+  background: #eef6ff;
+  border-color: #1263ff;
+}
+
+/* Alertas */
+
+.alerta {
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.alerta-erro {
+  background: #ffe8e8;
+  color: #9b1c1c;
+  border: 1px solid #f5b5b5;
+}
+
+.alerta-sucesso {
+  background: #e8fff1;
+  color: #166534;
+  border: 1px solid #9be7b1;
+}
+
+/* Card principal */
+
+.card-cadastro-paciente {
+  width: 100%;
+  max-height: calc(100vh - 170px);
+  padding: 22px 32px 14px 32px;
+  box-sizing: border-box;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  margin-top: 0;
+}
+
+.cadastro-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.cadastro-card-header h2 {
+  margin: 0 0 4px 0;
+  color: #071b36;
+  font-size: 26px;
+  line-height: 1.1;
+  font-weight: 900;
+}
+
+.cadastro-card-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 15px;
+}
+
+.cadastro-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: #e8f8ef;
+  color: #0f8a55;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Formulário */
+
+.form-cadastro-paciente {
+  width: 100%;
+  margin: 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+  row-gap: 12px;
+}
+
+.form-grid-clinico {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 18px;
+  row-gap: 12px;
+  margin-top: 12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0;
+}
+
+.form-group label {
+  color: #071b36;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  height: 40px;
+  min-height: 40px;
+  padding: 7px 14px;
+  box-sizing: border-box;
+  border: 1px solid #d4deea;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #071b36;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.form-group textarea {
+  height: 62px;
+  min-height: 62px;
+  max-height: 62px;
+  resize: none;
+  line-height: 1.35;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #7b8797;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #1263ff;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(18, 99, 255, 0.11);
+}
+
+/* Botão */
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.btn-health {
+  height: 42px;
+  padding: 0 28px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1263ff 0%, #13a36f 100%);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-health:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(18, 99, 255, 0.22);
+}
+
+/* Correções para evitar corte por CSS global */
+
+.triagem-page,
+.triagem-card,
+.card-cadastro-paciente,
+.form-cadastro-paciente {
+  min-height: 0;
+}
+
+.card-cadastro-paciente,
+.form-cadastro-paciente {
+  overflow: hidden;
+}
+
+/* Responsivo */
+
+@media (max-width: 1100px) {
+  .pagina-cadastro-paciente {
+    padding: 8px 32px 14px 32px;
+  }
+
+  .cadastro-paciente-header h1 {
+    font-size: 34px;
+  }
+
+  .card-cadastro-paciente {
+    padding: 20px 26px 14px 26px;
+  }
+
+  .form-grid {
+    column-gap: 18px;
+    row-gap: 10px;
+  }
+
+  .form-grid-clinico {
+    column-gap: 14px;
+    row-gap: 10px;
+  }
+}
+
+@media (max-width: 900px) {
+  .pagina-cadastro-paciente {
+    height: auto;
+    min-height: calc(100vh - 68px);
+    overflow-y: auto;
+  }
+
+  .cadastro-paciente-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-grid,
+  .form-grid-clinico {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    justify-content: stretch;
+  }
+
+  .form-actions .btn-health {
+    width: 100%;
+  }
 }

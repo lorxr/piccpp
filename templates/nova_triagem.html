@@ -3,22 +3,22 @@
 <div class="triagem-page">
   <div class="page-header">
     <div>
-      <span class="system-badge">Nova Triagem</span>
-      <!-- <h1>Nova Triagem</h1> -->
-      <!-- <p>
+      <h1>Nova Triagem</h1>
+
+      <p>
         Registre os dados iniciais do paciente para apoiar a pré-consulta e a
         classificação do atendimento.
-      </p> -->
+      </p>
     </div>
 
-    <a href="/" class="btn-health-outline"> Voltar ao início </a>
+    <a href="/inicio" class="btn-health-outline">Voltar ao início</a>
   </div>
 
   <div class="triagem-card">
     <div class="triagem-card-header">
       <div>
         <h2>Ficha de atendimento</h2>
-        <p>Preencha as etapas abaixo para concluir a triagem.</p>
+        <p>Preencha as etapas abaixo para gerar a pré-análise da triagem.</p>
       </div>
 
       <div class="triagem-status">Em preenchimento</div>
@@ -65,7 +65,7 @@
 
           <div class="form-group">
             <label for="glicemia">Glicemia (mg/dL)</label>
-            <input type="number" id="glicemia" name="glicemia"   />
+            <input type="number" id="glicemia" name="glicemia" />
           </div>
         </div>
 
@@ -90,9 +90,16 @@
           <div>
             <span>Paciente vinculado</span>
             <strong id="nomePacienteDisplay">Nenhum paciente vinculado</strong>
+
+            <div id="dadosPacienteDisplay" class="dados-paciente-display">
+              <small>Idade: não informado | Gênero: não informado</small>
+            </div>
           </div>
 
           <input type="hidden" id="inputPacienteId" name="paciente_id" />
+          <input type="hidden" id="inputPacienteNome" name="paciente_nome" />
+          <input type="hidden" id="inputPacienteIdade" name="idade" />
+          <input type="hidden" id="inputPacienteGenero" name="genero" />
 
           <button
             type="button"
@@ -108,6 +115,13 @@
           <textarea id="sintomas" name="sintomas" rows="6" required></textarea>
         </div>
 
+        <input
+          type="hidden"
+          id="palavrasChave"
+          name="palavras_chave"
+          value="[]"
+        />
+
         <div class="form-actions form-actions-between">
           <button
             type="button"
@@ -117,9 +131,7 @@
             Voltar
           </button>
 
-          <button type="submit" class="btn-health">
-            Salvar e Gerar Triagem
-          </button>
+          <button type="submit" class="btn-health">Gerar Triagem</button>
         </div>
       </div>
     </form>
@@ -163,17 +175,17 @@
       </div>
 
       <ul class="lista-pacientes" id="ulPacientes">
-        <li onclick="selecionarPaciente(1, 'Maria da Silva')">
+        <li onclick="selecionarPaciente(1, 'Maria da Silva', '34', 'Feminino')">
           <strong>Maria da Silva</strong>
           <span>CPF: 111.222.333-44</span>
         </li>
 
-        <li onclick="selecionarPaciente(2, 'João Souza')">
+        <li onclick="selecionarPaciente(2, 'João Souza', '42', 'Masculino')">
           <strong>João Souza</strong>
           <span>CPF: 555.666.777-88</span>
         </li>
 
-        <li onclick="selecionarPaciente(3, 'Ana Oliveira')">
+        <li onclick="selecionarPaciente(3, 'Ana Oliveira', '28', 'Feminino')">
           <strong>Ana Oliveira</strong>
           <span>CPF: 999.888.777-66</span>
         </li>
@@ -198,7 +210,7 @@
         </div>
 
         <div class="form-group">
-          <label for="novoSexo">Sexo</label>
+          <label for="novoSexo">Sexo/Gênero</label>
           <input type="text" id="novoSexo" />
         </div>
       </div>
@@ -239,9 +251,20 @@
     modal.close();
   }
 
-  function selecionarPaciente(id, nome) {
+  function selecionarPaciente(id, nome, idade = "", genero = "") {
     document.getElementById("nomePacienteDisplay").innerText = nome;
     document.getElementById("inputPacienteId").value = id;
+    document.getElementById("inputPacienteNome").value = nome;
+    document.getElementById("inputPacienteIdade").value = idade;
+    document.getElementById("inputPacienteGenero").value = genero;
+
+    const idadeTexto = idade && idade.trim() !== "" ? idade : "não informado";
+    const generoTexto =
+      genero && genero.trim() !== "" ? genero : "não informado";
+
+    document.getElementById("dadosPacienteDisplay").innerHTML =
+      `<small>Idade: ${idadeTexto} | Gênero: ${generoTexto}</small>`;
+
     fecharModal();
   }
 
@@ -277,13 +300,15 @@
 
   function salvarNovoPacienteRapido() {
     let nome = document.getElementById("novoNome").value;
+    let idade = document.getElementById("novaIdade").value;
+    let genero = document.getElementById("novoSexo").value;
 
     if (!nome) {
       alert("Preencha o nome do paciente!");
       return;
     }
 
-    selecionarPaciente(99, nome);
+    selecionarPaciente(99, nome, idade, genero);
   }
 </script>
 

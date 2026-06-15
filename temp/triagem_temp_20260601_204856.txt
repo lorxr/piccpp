@@ -1,0 +1,7 @@
+{
+    "idade": "42",
+    "genero": "Masculino",
+    "sintomas": "Paciente relata intenso sono, cansaço e tonturas",
+    "sinais_vitais": "Temperatura: 36,1 °C | PA: 6,10 | Frequência cardíaca: 50 BPM | Glicemia: 130 mg/dL",
+    "medicamentos": "Durateston"
+}
