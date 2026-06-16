@@ -239,6 +239,48 @@ def lista_pacientes():
     
     return render_template("pacientes.html", pacientes=pacientes_cadastrados)
 
+
+# -------------------------------------------------------------------
+# DADOS DOS PACIENTES
+# No futuro substituir este dicionário por uma consulta no banco
+# -------------------------------------------------------------------
+
+@app.route("/perfil-paciente/<int:paciente_id>")
+@login_obrigatorio
+
+def perfil_paciente(paciente_id):
+    
+    banco_pacientes_completo = {
+        1: {
+            "id": 1, "nome": "Carlos Eduardo Silva", "cpf": "111.222.333-44", 
+            "data_nascimento": "15/05/1979", "idade": 45, "genero": "Masculino", 
+            "telefone": "(11) 99999-1111", "cidade": "São Paulo - SP", "endereco": "Rua das Flores, 123, Centro"
+        },
+        2: {
+            "id": 2, "nome": "Ana Maria Ferreira", "cpf": "555.666.777-88", 
+            "data_nascimento": "22/08/1997", "idade": 28, "genero": "Feminino", 
+            "telefone": "(11) 98888-2222", "cidade": "Campinas - SP", "endereco": "Av. Brasil, 456, Jd. Primavera"
+        },
+        3: {
+            "id": 3, "nome": "Roberto Alves", "cpf": "999.888.777-66", 
+            "data_nascimento": "10/01/1992", "idade": 34, "genero": "Masculino", 
+            "telefone": "(21) 97777-3333", "cidade": "Rio de Janeiro - RJ", "endereco": "Rua Copacabana, 789, Copacabana"
+        },
+        4: {
+            "id": 4, "nome": "Juliana Costa", "cpf": "444.333.222-11", 
+            "data_nascimento": "05/11/1973", "idade": 52, "genero": "Feminino", 
+            "telefone": "(31) 96666-4444", "cidade": "Belo Horizonte - MG", "endereco": "Av. Afonso Pena, 1010, Savassi"
+        }
+    }
+
+    paciente_selecionado = banco_pacientes_completo.get(paciente_id)
+
+    if not paciente_selecionado:
+        return "Paciente não encontrado na base de dados.", 404
+
+    return render_template("perfil-paciente.html", paciente=paciente_selecionado)
+
+
 # ==================================================
 # TELA DO MEDICO
 # ==================================================
@@ -345,6 +387,54 @@ def salvar_nova_senha():
 def logout():
     session.clear()
     return redirect(url_for("login"))
+
+
+# -------------------------------------------------------------------
+# DADOS DA CONSULTA
+# No futuro substituir este dicionário por uma consulta no banco
+# -------------------------------------------------------------------
+
+@app.route("/consulta/<int:paciente_id>")
+@login_obrigatorio
+def iniciar_consulta(paciente_id):
+    
+    banco_de_dados_falso = {
+        1: {
+            "id": 1, "nome": "Carlos Eduardo Silva", "idade": 45, "genero": "Masculino", "cpf": "111.222.333-44",
+            "classificacao": "Emergência", "cor_classificacao": "#e53935",
+            "temperatura": "37.2 °C", "pressao": "160/100 mmHg", "frequencia": "110 bpm", "glicemia": "145 mg/dL",
+            "medicamentos": "Losartana 50mg (1x ao dia), Metformina 850mg (2x ao dia)", # <-- NOVO CAMPO
+            "sintomas": "Dor intensa no peito com irradiação para o braço esquerdo, sudorese e náusea leve iniciada há 40 minutos.",
+            "ia_insight": "⚠️ ALERTA CRÍTICO: Padrão sintomático altamente sugestivo de Infarto Agudo do Miocárdio (IAM). Recomenda-se ECG imediato, acesso venoso e acionamento do protocolo de dor torácica."
+        },
+        2: {
+            "id": 2, "nome": "Marcos Paulo Souza", "idade": 28, "genero": "Masculino", "cpf": "555.666.777-88",
+            "classificacao": "Urgência", "cor_classificacao": "#fdd835",
+            "temperatura": "38.5 °C", "pressao": "120/80 mmHg", "frequencia": "90 bpm", "glicemia": "98 mg/dL",
+            "medicamentos": "Nenhum histórico relatado", # <-- NOVO CAMPO
+            "sintomas": "Falta de ar moderada, tosse seca e febre contínua há 2 dias.",
+            "ia_insight": "💡 AVALIAÇÃO IA: Sintomas sugerem quadro infeccioso respiratório. Risco moderado. Considerar ausculta pulmonar detalhada, raio-X de tórax e teste rápido para vírus respiratórios."
+        },
+        3: {
+            "id": 3, "nome": "Roberto Alves", "idade": 34, "genero": "Masculino", "cpf": "999.888.777-66",
+            "classificacao": "Pouco Urgente", "cor_classificacao": "#43a047",
+            "temperatura": "39.0 °C", "pressao": "110/70 mmHg", "frequencia": "85 bpm", "glicemia": "Não aferido",
+            "medicamentos": "Omeprazol 20mg (em jejum)", # <-- NOVO CAMPO
+            "sintomas": "Febre alta isolada, dores no corpo e dor atrás dos olhos.",
+            "ia_insight": "💡 AVALIAÇÃO IA: O quadro de mialgia, febre e dor retro-orbital em área endêmica tem forte correlação com Dengue ou outras arboviroses. Recomenda-se hidratação oral e hemograma."
+        }
+    }
+
+    # Busca o paciente pelo ID. Se não achar, o .get() retorna None
+    paciente_selecionado = banco_de_dados_falso.get(paciente_id)
+
+    # Se alguém digitar um ID que não existe na URL (ex: /consulta/99)
+    if not paciente_selecionado:
+        return "Paciente não encontrado no sistema.", 404
+
+    # Envia os dados daquele paciente específico para a tela
+    return render_template("consulta.html", paciente=paciente_selecionado)
+
 
 
 # ==================================================
@@ -677,4 +767,5 @@ def cadastrar_paciente():
 
 if __name__ == "__main__":
     app.run(debug=False)
+
 
