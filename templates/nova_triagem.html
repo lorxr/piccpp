@@ -4,7 +4,6 @@
   <div class="page-header">
     <div>
       <h1>Nova Triagem</h1>
-
       <p>
         Registre os dados iniciais do paciente para apoiar a pré-consulta e a
         classificação do atendimento.
@@ -14,6 +13,10 @@
     <a href="/inicio" class="btn-health-outline">Voltar ao início</a>
   </div>
 
+  {% if erro_pacientes %}
+  <div class="alerta alerta-erro">{{ erro_pacientes }}</div>
+  {% endif %}
+
   <div class="triagem-card">
     <div class="triagem-card-header">
       <div>
@@ -21,32 +24,39 @@
         <p>Preencha as etapas abaixo para gerar a pré-análise da triagem.</p>
       </div>
 
-      <div class="triagem-status">Em preenchimento</div>
+      <span class="triagem-status">Em preenchimento</span>
     </div>
 
-    <div class="step-tabs">
-      <button
-        type="button"
-        id="btnAbaSinais"
-        class="ativo"
-        onclick="mudarAbaPrincipal('sinais')"
-      >
-        <span>1</span>
-        Sinais Vitais
-      </button>
+    <form action="/triagem" method="POST" id="formTriagem">
+      <input type="hidden" name="paciente_id" id="paciente_id" />
+      <input type="hidden" name="paciente_nome" id="paciente_nome" />
+      <input type="hidden" name="idade" id="paciente_idade" />
+      <input type="hidden" name="genero" id="paciente_genero" />
+      <input
+        type="hidden"
+        name="palavras_chave"
+        id="palavras_chave"
+        value="[]"
+      />
 
-      <button
-        type="button"
-        id="btnAbaSintomas"
-        onclick="mudarAbaPrincipal('sintomas')"
-      >
-        <span>2</span>
-        Sintomas e Vínculo
-      </button>
-    </div>
+      <div class="step-tabs">
+        <button
+          type="button"
+          class="ativo"
+          id="btnEtapa1"
+          onclick="mostrarEtapa(1)"
+        >
+          <span>1</span>
+          Sinais Vitais
+        </button>
 
-    <form action="/triagem" method="POST">
-      <div id="viewSinaisVitais" class="triagem-section">
+        <button type="button" id="btnEtapa2" onclick="mostrarEtapa(2)">
+          <span>2</span>
+          Sintomas e Vínculo
+        </button>
+      </div>
+
+      <div class="triagem-section" id="etapa1">
         <div class="form-grid">
           <div class="form-group">
             <label for="temperatura">Temperatura (°C)</label>
@@ -71,40 +81,32 @@
 
         <div class="form-group">
           <label for="medicamentos">Medicamentos de Uso Contínuo</label>
-          <input type="text" id="medicamentos" name="medicamentos" />
+          <textarea id="medicamentos" name="medicamentos"></textarea>
         </div>
 
         <div class="form-actions">
-          <button
-            type="button"
-            class="btn-health"
-            onclick="mudarAbaPrincipal('sintomas')"
-          >
+          <button type="button" class="btn-health" onclick="mostrarEtapa(2)">
             Avançar para sintomas
           </button>
         </div>
       </div>
 
-      <div id="viewSintomas" class="triagem-section" style="display: none">
+      <div class="triagem-section" id="etapa2" style="display: none">
         <div class="paciente-vinculado">
           <div>
             <span>Paciente vinculado</span>
-            <strong id="nomePacienteDisplay">Nenhum paciente vinculado</strong>
-
-            <div id="dadosPacienteDisplay" class="dados-paciente-display">
-              <small>Idade: não informado | Gênero: não informado</small>
-            </div>
+            <strong id="nomePacienteSelecionado"
+              >Nenhum paciente vinculado</strong
+            >
+            <p id="dadosPacienteSelecionado">
+              Idade: não informado | Gênero: não informado
+            </p>
           </div>
-
-          <input type="hidden" id="inputPacienteId" name="paciente_id" />
-          <input type="hidden" id="inputPacienteNome" name="paciente_nome" />
-          <input type="hidden" id="inputPacienteIdade" name="idade" />
-          <input type="hidden" id="inputPacienteGenero" name="genero" />
 
           <button
             type="button"
             class="btn-health-outline"
-            onclick="abrirModal()"
+            onclick="abrirModalPaciente()"
           >
             Vincular Paciente
           </button>
@@ -112,21 +114,14 @@
 
         <div class="form-group">
           <label for="sintomas">Relato de Sintomas</label>
-          <textarea id="sintomas" name="sintomas" rows="6" required></textarea>
+          <textarea id="sintomas" name="sintomas" required></textarea>
         </div>
-
-        <input
-          type="hidden"
-          id="palavrasChave"
-          name="palavras_chave"
-          value="[]"
-        />
 
         <div class="form-actions form-actions-between">
           <button
             type="button"
             class="btn-health-outline"
-            onclick="mudarAbaPrincipal('sinais')"
+            onclick="mostrarEtapa(1)"
           >
             Voltar
           </button>
@@ -138,178 +133,141 @@
   </div>
 </div>
 
-<dialog id="modalPaciente" class="modal-paciente">
+<dialog class="modal-paciente" id="modalPaciente">
   <div class="modal-header">
     <div>
       <h3>Vincular Paciente</h3>
-      <p>Busque um paciente existente ou cadastre um novo.</p>
+      <p>Busque um paciente existente cadastrado no banco.</p>
     </div>
 
-    <button class="btn-fechar" onclick="fecharModal()">✖</button>
+    <button type="button" class="btn-fechar" onclick="fecharModalPaciente()">
+      ✖
+    </button>
   </div>
 
   <div class="modal-body">
     <div class="modal-tabs">
-      <button
-        type="button"
-        id="btnAbaBusca"
-        class="ativo"
-        onclick="mudarAbaModal('busca')"
-      >
-        Buscar Existente
-      </button>
+      <button type="button" class="ativo">Buscar Existente</button>
 
-      <button
-        type="button"
-        id="btnAbaCadastro"
-        onclick="mudarAbaModal('cadastro')"
-      >
+      <a href="/cadastrar-paciente" class="btn-health-outline">
         Cadastrar Novo
-      </button>
+      </a>
     </div>
 
-    <div id="viewBusca">
-      <div class="form-group">
-        <label for="filtroInput">Pesquisar paciente</label>
-        <input type="text" id="filtroInput" onkeyup="filtrarLista()" />
-      </div>
-
-      <ul class="lista-pacientes" id="ulPacientes">
-        <li onclick="selecionarPaciente(1, 'Maria da Silva', '34', 'Feminino')">
-          <strong>Maria da Silva</strong>
-          <span>CPF: 111.222.333-44</span>
-        </li>
-
-        <li onclick="selecionarPaciente(2, 'João Souza', '42', 'Masculino')">
-          <strong>João Souza</strong>
-          <span>CPF: 555.666.777-88</span>
-        </li>
-
-        <li onclick="selecionarPaciente(3, 'Ana Oliveira', '28', 'Feminino')">
-          <strong>Ana Oliveira</strong>
-          <span>CPF: 999.888.777-66</span>
-        </li>
-      </ul>
+    <div class="form-group">
+      <label for="pesquisarPaciente">Pesquisar paciente</label>
+      <input type="text" id="pesquisarPaciente" onkeyup="filtrarPacientes()" />
     </div>
 
-    <div id="viewCadastro" style="display: none">
-      <div class="form-grid-modal">
-        <div class="form-group">
-          <label for="novoNome">Nome Completo</label>
-          <input type="text" id="novoNome" />
-        </div>
-
-        <div class="form-group">
-          <label for="novaIdade">Idade</label>
-          <input type="number" id="novaIdade" />
-        </div>
-
-        <div class="form-group">
-          <label for="novoCpf">CPF</label>
-          <input type="text" id="novoCpf" />
-        </div>
-
-        <div class="form-group">
-          <label for="novoSexo">Sexo/Gênero</label>
-          <input type="text" id="novoSexo" />
-        </div>
-      </div>
-
-      <button
-        type="button"
-        class="btn-health btn-full"
-        onclick="salvarNovoPacienteRapido()"
+    <ul class="lista-pacientes" id="listaPacientes">
+      {% if pacientes and pacientes|length > 0 %} {% for paciente in pacientes
+      %}
+      <li
+        class="item-paciente"
+        data-id="{{ paciente.id_paciente }}"
+        data-nome="{{ paciente.nome_paciente }}"
+        data-cpf="{{ paciente.cpf_paciente }}"
+        data-idade="{{ paciente.idade_paciente }}"
+        data-genero="{{ paciente.genero_paciente }}" 
+        onclick="selecionarPaciente(this)"
       >
-        Cadastrar e Selecionar
-      </button>
-    </div>
+        <strong>{{ paciente.nome_paciente }}</strong>
+        <span>CPF: {{ paciente.cpf_paciente }}</span>
+        <span>
+          Idade: {{ paciente.idade_paciente }} | Gênero: {{
+          paciente.genero_paciente }}
+        </span>
+      </li>
+      {% endfor %} {% else %}
+      <li>
+        <strong>Nenhum paciente cadastrado</strong>
+        <span>Cadastre um paciente antes de iniciar a triagem.</span>
+      </li>
+      {% endif %}
+    </ul>
   </div>
 </dialog>
 
 <script>
-  function mudarAbaPrincipal(aba) {
-    if (aba === "sinais") {
-      document.getElementById("viewSinaisVitais").style.display = "block";
-      document.getElementById("viewSintomas").style.display = "none";
-      document.getElementById("btnAbaSinais").classList.add("ativo");
-      document.getElementById("btnAbaSintomas").classList.remove("ativo");
+  function mostrarEtapa(numero) {
+    const etapa1 = document.getElementById("etapa1");
+    const etapa2 = document.getElementById("etapa2");
+    const btnEtapa1 = document.getElementById("btnEtapa1");
+    const btnEtapa2 = document.getElementById("btnEtapa2");
+
+    if (numero === 1) {
+      etapa1.style.display = "block";
+      etapa2.style.display = "none";
+
+      btnEtapa1.classList.add("ativo");
+      btnEtapa2.classList.remove("ativo");
     } else {
-      document.getElementById("viewSinaisVitais").style.display = "none";
-      document.getElementById("viewSintomas").style.display = "block";
-      document.getElementById("btnAbaSintomas").classList.add("ativo");
-      document.getElementById("btnAbaSinais").classList.remove("ativo");
+      etapa1.style.display = "none";
+      etapa2.style.display = "block";
+
+      btnEtapa1.classList.remove("ativo");
+      btnEtapa2.classList.add("ativo");
     }
   }
 
-  const modal = document.getElementById("modalPaciente");
-
-  function abrirModal() {
+  function abrirModalPaciente() {
+    const modal = document.getElementById("modalPaciente");
     modal.showModal();
   }
 
-  function fecharModal() {
+  function fecharModalPaciente() {
+    const modal = document.getElementById("modalPaciente");
     modal.close();
   }
 
-  function selecionarPaciente(id, nome, idade = "", genero = "") {
-    document.getElementById("nomePacienteDisplay").innerText = nome;
-    document.getElementById("inputPacienteId").value = id;
-    document.getElementById("inputPacienteNome").value = nome;
-    document.getElementById("inputPacienteIdade").value = idade;
-    document.getElementById("inputPacienteGenero").value = genero;
+  function selecionarPaciente(elemento) {
+    const id = elemento.dataset.id;
+    const nome = elemento.dataset.nome;
+    const idade = elemento.dataset.idade;
+    const genero = elemento.dataset.genero;
 
-    const idadeTexto = idade && idade.trim() !== "" ? idade : "não informado";
-    const generoTexto =
-      genero && genero.trim() !== "" ? genero : "não informado";
+    document.getElementById("paciente_id").value = id;
+    document.getElementById("paciente_nome").value = nome;
+    document.getElementById("paciente_idade").value = idade;
+    document.getElementById("paciente_genero").value = genero;
 
-    document.getElementById("dadosPacienteDisplay").innerHTML =
-      `<small>Idade: ${idadeTexto} | Gênero: ${generoTexto}</small>`;
+    document.getElementById("nomePacienteSelecionado").innerText = nome;
+    document.getElementById("dadosPacienteSelecionado").innerText =
+      "Idade: " + idade + " | Gênero: " + genero;
 
-    fecharModal();
+    fecharModalPaciente();
   }
 
-  function mudarAbaModal(aba) {
-    if (aba === "busca") {
-      document.getElementById("viewBusca").style.display = "block";
-      document.getElementById("viewCadastro").style.display = "none";
-      document.getElementById("btnAbaBusca").classList.add("ativo");
-      document.getElementById("btnAbaCadastro").classList.remove("ativo");
-    } else {
-      document.getElementById("viewBusca").style.display = "none";
-      document.getElementById("viewCadastro").style.display = "block";
-      document.getElementById("btnAbaCadastro").classList.add("ativo");
-      document.getElementById("btnAbaBusca").classList.remove("ativo");
-    }
-  }
+  function filtrarPacientes() {
+    const filtro = document
+      .getElementById("pesquisarPaciente")
+      .value.toLowerCase();
 
-  function filtrarLista() {
-    let filtro = document.getElementById("filtroInput").value.toUpperCase();
-    let ul = document.getElementById("ulPacientes");
-    let li = ul.getElementsByTagName("li");
+    const itens = document.querySelectorAll(".item-paciente");
 
-    for (let i = 0; i < li.length; i++) {
-      let texto = li[i].textContent || li[i].innerText;
+    itens.forEach(function (item) {
+      const nome = (item.dataset.nome || "").toLowerCase();
+      const cpf = (item.dataset.cpf || "").toLowerCase();
 
-      if (texto.toUpperCase().indexOf(filtro) > -1) {
-        li[i].style.display = "";
+      if (nome.includes(filtro) || cpf.includes(filtro)) {
+        item.style.display = "flex";
       } else {
-        li[i].style.display = "none";
+        item.style.display = "none";
       }
-    }
+    });
   }
 
-  function salvarNovoPacienteRapido() {
-    let nome = document.getElementById("novoNome").value;
-    let idade = document.getElementById("novaIdade").value;
-    let genero = document.getElementById("novoSexo").value;
+  document
+    .getElementById("formTriagem")
+    .addEventListener("submit", function (event) {
+      const pacienteId = document.getElementById("paciente_id").value;
 
-    if (!nome) {
-      alert("Preencha o nome do paciente!");
-      return;
-    }
-
-    selecionarPaciente(99, nome, idade, genero);
-  }
+      if (!pacienteId) {
+        event.preventDefault();
+        alert("Vincule um paciente antes de gerar a triagem.");
+        mostrarEtapa(2);
+      }
+    });
 </script>
 
 {% endblock %}
