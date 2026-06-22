@@ -697,6 +697,35 @@ def listar_triagens_medico():
 
     return pacientes_espera
 
+def buscar_dados_consulta(id_triagem):
+    sql = """
+        SELECT
+            t.id_triagem,
+            t.classificacao_ia,
+            t.diagnostico_ia,
+            t.descricao_ia,
+            t.sintomas_relatados,
+            t.status_validacao,
+            t.data_triagem,
+
+            p.id_paciente,
+            p.nome_paciente,
+            p.cpf_paciente,
+            p.data_nasc_paciente,
+            p.idade_paciente,
+            p.genero_paciente,
+            p.telefone_paciente,
+            p.endereco_paciente,
+            p.cidade_paciente
+        FROM public."Triagem" t
+        INNER JOIN public."Paciente" p
+            ON p.id_paciente = t.id_paciente
+        WHERE t.id_triagem = %s
+        LIMIT 1;
+    """
+
+    return executar_select(sql, (id_triagem,), um_registro=True)
+
 
 def listar_triagens_para_tela_inicial():
     sql = """
@@ -712,17 +741,16 @@ def listar_triagens_para_tela_inicial():
         FROM public."Triagem" t
         INNER JOIN public."Paciente" p
             ON p.id_paciente = t.id_paciente
+        WHERE COALESCE(t.status_validacao, 'Pendente') = 'Pendente'
         ORDER BY t.data_triagem ASC;
     """
 
     triagens = executar_select(sql)
 
-    painel = {
-        "emergencia": [],
-        "urgencia": [],
-        "pouco_urgente": [],
-        "nao_urgente": [],
-    }
+    pacientes_vermelhos = []
+    pacientes_amarelos = []
+    pacientes_verdes = []
+    pacientes_azuis = []
 
     for triagem in triagens:
         classificacao = triagem.get("classificacao_ia") or "Não classificada"
@@ -730,7 +758,7 @@ def listar_triagens_para_tela_inicial():
 
         paciente = {
             "id": triagem.get("id_triagem"),
-            "nome": triagem.get("nome_paciente"),
+            "nome_completo": triagem.get("nome_paciente"),
             "classificacao": classificacao,
             "diagnostico": triagem.get("diagnostico_ia"),
             "descricao": triagem.get("descricao_ia"),
@@ -740,21 +768,26 @@ def listar_triagens_para_tela_inicial():
         }
 
         if "emerg" in texto or "vermelh" in texto:
-            painel["emergencia"].append(paciente)
+            pacientes_vermelhos.append(paciente)
 
         elif "nao urgente" in texto or "azul" in texto:
-            painel["nao_urgente"].append(paciente)
+            pacientes_azuis.append(paciente)
 
         elif "pouco" in texto or "verde" in texto:
-            painel["pouco_urgente"].append(paciente)
+            pacientes_verdes.append(paciente)
 
         elif "urg" in texto or "amarel" in texto:
-            painel["urgencia"].append(paciente)
+            pacientes_amarelos.append(paciente)
 
         else:
-            painel["nao_urgente"].append(paciente)
+            pacientes_azuis.append(paciente)
 
-    return painel
+    return {
+        "pacientes_vermelhos": pacientes_vermelhos,
+        "pacientes_amarelos": pacientes_amarelos,
+        "pacientes_verdes": pacientes_verdes,
+        "pacientes_azuis": pacientes_azuis,
+    }
 
 
 # ==================================================
@@ -1011,21 +1044,24 @@ def salvar_nova_senha():
 @login_obrigatorio
 def inicio():
     try:
-        painel_triagem = listar_triagens_para_tela_inicial()
+        filas_triagem = listar_triagens_para_tela_inicial()
 
     except Exception as erro:
         print("Erro ao carregar triagens na tela inicial:", erro)
 
-        painel_triagem = {
-            "emergencia": [],
-            "urgencia": [],
-            "pouco_urgente": [],
-            "nao_urgente": [],
+        filas_triagem = {
+            "pacientes_vermelhos": [],
+            "pacientes_amarelos": [],
+            "pacientes_verdes": [],
+            "pacientes_azuis": [],
         }
 
     return render_template(
         "index.html",
-        painel_triagem=painel_triagem,
+        pacientes_vermelhos=filas_triagem["pacientes_vermelhos"],
+        pacientes_amarelos=filas_triagem["pacientes_amarelos"],
+        pacientes_verdes=filas_triagem["pacientes_verdes"],
+        pacientes_azuis=filas_triagem["pacientes_azuis"],
     )
 
 
@@ -1498,7 +1534,82 @@ def fila_medico():
         "medico.html",
         pacientes=pacientes_espera,
     )
+    
+    # -------------------------------------------------------------------
+# DADOS DA CONSULTA
+# -------------------------------------------------------------------
 
+@app.route("/consulta/<int:id_triagem>")
+@login_obrigatorio
+def iniciar_consulta(id_triagem):
+    try:
+        dados = buscar_dados_consulta(id_triagem)
+
+        if not dados:
+            return "Triagem não encontrada no sistema.", 404
+
+        cor = cor_por_classificacao(dados.get("classificacao_ia") or "")
+
+        paciente_selecionado = {
+            "id": dados["id_paciente"],
+            "id_triagem": dados["id_triagem"],
+            "nome": dados["nome_paciente"],
+            "idade": dados["idade_paciente"],
+            "genero": dados["genero_paciente"],
+            "cpf": dados["cpf_paciente"],
+            "classificacao": dados.get("classificacao_ia") or "Não classificada",
+            "diagnostico": dados.get("diagnostico_ia") or "Não informado pela IA",
+            "cor_classificacao": cor,
+            "sintomas": dados.get("sintomas_relatados") or "Não informado",
+            "ia_insight": dados.get("descricao_ia") or "Aguardando análise da IA",
+
+            # Esses campos ainda não estão sendo salvos na tabela Triagem.
+            "temperatura": "-- °C",
+            "pressao": "-- mmHg",
+            "frequencia": "-- bpm",
+            "glicemia": "-- mg/dL",
+            "medicamentos": "Dados não salvos no BD",
+        }
+
+        return render_template("consulta.html", paciente=paciente_selecionado)
+
+    except Exception as erro:
+        print("Erro ao carregar dados da consulta:", erro)
+        return f"Erro interno ao tentar acessar o banco de dados: {erro}", 500
+
+# -------------------------------------------------------------------
+# DADOS DOS PACIENTES
+# -------------------------------------------------------------------
+
+@app.route("/perfil-paciente/<int:paciente_id>")
+
+@login_obrigatorio
+def perfil_paciente(paciente_id):
+    try:
+        # Usa a função exata que já no app.py para buscar no Postgres
+        paciente_banco = buscar_paciente_por_id(paciente_id)
+
+        if not paciente_banco:
+            return "Paciente não encontrado na base de dados.", 404
+
+     
+        paciente_selecionado = {
+            "id": paciente_banco["id_paciente"],
+            "nome": paciente_banco["nome_paciente"],
+            "cpf": paciente_banco["cpf_paciente"],
+            "data_nascimento": paciente_banco["data_nasc_paciente"],
+            "idade": paciente_banco["idade_paciente"],
+            "genero": paciente_banco["genero_paciente"],
+            "telefone": paciente_banco["telefone_paciente"],
+            "cidade": paciente_banco["cidade_paciente"],
+            "endereco": paciente_banco["endereco_paciente"]
+        }
+
+        return render_template("perfil-paciente.html", paciente=paciente_selecionado)
+
+    except Exception as erro:
+        print("Erro ao carregar o perfil do paciente:", erro)
+        return "Erro interno ao tentar acessar o banco de dados.", 500
 
 # ==================================================
 # TESTE DE CONEXÃO COM BANCO
