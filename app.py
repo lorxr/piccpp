@@ -597,6 +597,18 @@ def buscar_paciente_por_id(id_paciente):
 
     return executar_select(sql, (id_paciente,), um_registro=True)
 
+def buscar_dados_consulta(id_paciente):
+    sql = """
+        SELECT 
+            p.id_paciente, p.nome_paciente, p.idade_paciente, p.genero_paciente, p.cpf_paciente,
+            t.id_triagem, t.classificacao_ia, t.sintomas_relatados, t.descricao_ia
+        FROM public."Paciente" p
+        LEFT JOIN public."Triagem" t ON p.id_paciente = t.id_paciente
+        WHERE p.id_paciente = %s
+        ORDER BY t.data_triagem DESC
+        LIMIT 1;
+    """
+    return executar_select(sql, (id_paciente,), um_registro=True)
 
 def salvar_triagem_inicial_banco(
     id_paciente,
@@ -932,24 +944,7 @@ def login():
     return render_template("seguranca/login.html")
 
 
-# ==================================================
-# TELA LISTA DE PACIENTES
-# ==================================================
 
-@app.route("/pacientes")
-@login_obrigatorio
-
-def lista_pacientes():
-    
-    # Dados para teste mudar depois
-    pacientes_cadastrados = [
-        {"id": 1, "nome": "Carlos Eduardo Silva", "idade": 45, "genero": "Masculino", "cpf": "111.222.333-44"},
-        {"id": 2, "nome": "Ana Maria Ferreira", "idade": 28, "genero": "Feminino", "cpf": "555.666.777-88"},
-        {"id": 3, "nome": "Roberto Alves", "idade": 34, "genero": "Masculino", "cpf": "999.888.777-66"},
-        {"id": 4, "nome": "Juliana Costa", "idade": 52, "genero": "Feminino", "cpf": "444.333.222-11"}
-    ]
-    
-    return render_template("pacientes.html", pacientes=pacientes_cadastrados)
 
 
 # -------------------------------------------------------------------
@@ -958,39 +953,34 @@ def lista_pacientes():
 # -------------------------------------------------------------------
 
 @app.route("/perfil-paciente/<int:paciente_id>")
+
 @login_obrigatorio
-
 def perfil_paciente(paciente_id):
-    
-    banco_pacientes_completo = {
-        1: {
-            "id": 1, "nome": "Carlos Eduardo Silva", "cpf": "111.222.333-44", 
-            "data_nascimento": "15/05/1979", "idade": 45, "genero": "Masculino", 
-            "telefone": "(11) 99999-1111", "cidade": "São Paulo - SP", "endereco": "Rua das Flores, 123, Centro"
-        },
-        2: {
-            "id": 2, "nome": "Ana Maria Ferreira", "cpf": "555.666.777-88", 
-            "data_nascimento": "22/08/1997", "idade": 28, "genero": "Feminino", 
-            "telefone": "(11) 98888-2222", "cidade": "Campinas - SP", "endereco": "Av. Brasil, 456, Jd. Primavera"
-        },
-        3: {
-            "id": 3, "nome": "Roberto Alves", "cpf": "999.888.777-66", 
-            "data_nascimento": "10/01/1992", "idade": 34, "genero": "Masculino", 
-            "telefone": "(21) 97777-3333", "cidade": "Rio de Janeiro - RJ", "endereco": "Rua Copacabana, 789, Copacabana"
-        },
-        4: {
-            "id": 4, "nome": "Juliana Costa", "cpf": "444.333.222-11", 
-            "data_nascimento": "05/11/1973", "idade": 52, "genero": "Feminino", 
-            "telefone": "(31) 96666-4444", "cidade": "Belo Horizonte - MG", "endereco": "Av. Afonso Pena, 1010, Savassi"
+    try:
+        # Usa a função exata que já está no seu app.py para buscar no Postgres
+        paciente_banco = buscar_paciente_por_id(paciente_id)
+
+        if not paciente_banco:
+            return "Paciente não encontrado na base de dados.", 404
+
+        # Traduz as colunas do banco para o que o seu 'perfil-paciente.html' espera
+        paciente_selecionado = {
+            "id": paciente_banco["id_paciente"],
+            "nome": paciente_banco["nome_paciente"],
+            "cpf": paciente_banco["cpf_paciente"],
+            "data_nascimento": paciente_banco["data_nasc_paciente"],
+            "idade": paciente_banco["idade_paciente"],
+            "genero": paciente_banco["genero_paciente"],
+            "telefone": paciente_banco["telefone_paciente"],
+            "cidade": paciente_banco["cidade_paciente"],
+            "endereco": paciente_banco["endereco_paciente"]
         }
-    }
 
-    paciente_selecionado = banco_pacientes_completo.get(paciente_id)
+        return render_template("perfil-paciente.html", paciente=paciente_selecionado)
 
-    if not paciente_selecionado:
-        return "Paciente não encontrado na base de dados.", 404
-
-    return render_template("perfil-paciente.html", paciente=paciente_selecionado)
+    except Exception as erro:
+        print("Erro ao carregar o perfil do paciente:", erro)
+        return "Erro interno ao tentar acessar o banco de dados.", 500
 
 
 # ==================================================
@@ -1098,43 +1088,39 @@ def inicio():
 @app.route("/consulta/<int:paciente_id>")
 @login_obrigatorio
 def iniciar_consulta(paciente_id):
-    
-    banco_de_dados_falso = {
-        1: {
-            "id": 1, "nome": "Carlos Eduardo Silva", "idade": 45, "genero": "Masculino", "cpf": "111.222.333-44",
-            "classificacao": "Emergência", "cor_classificacao": "#e53935",
-            "temperatura": "37.2 °C", "pressao": "160/100 mmHg", "frequencia": "110 bpm", "glicemia": "145 mg/dL",
-            "medicamentos": "Losartana 50mg (1x ao dia), Metformina 850mg (2x ao dia)", # <-- NOVO CAMPO
-            "sintomas": "Dor intensa no peito com irradiação para o braço esquerdo, sudorese e náusea leve iniciada há 40 minutos.",
-            "ia_insight": "⚠️ ALERTA CRÍTICO: Padrão sintomático altamente sugestivo de Infarto Agudo do Miocárdio (IAM). Recomenda-se ECG imediato, acesso venoso e acionamento do protocolo de dor torácica."
-        },
-        2: {
-            "id": 2, "nome": "Marcos Paulo Souza", "idade": 28, "genero": "Masculino", "cpf": "555.666.777-88",
-            "classificacao": "Urgência", "cor_classificacao": "#fdd835",
-            "temperatura": "38.5 °C", "pressao": "120/80 mmHg", "frequencia": "90 bpm", "glicemia": "98 mg/dL",
-            "medicamentos": "Nenhum histórico relatado", # <-- NOVO CAMPO
-            "sintomas": "Falta de ar moderada, tosse seca e febre contínua há 2 dias.",
-            "ia_insight": "💡 AVALIAÇÃO IA: Sintomas sugerem quadro infeccioso respiratório. Risco moderado. Considerar ausculta pulmonar detalhada, raio-X de tórax e teste rápido para vírus respiratórios."
-        },
-        3: {
-            "id": 3, "nome": "Roberto Alves", "idade": 34, "genero": "Masculino", "cpf": "999.888.777-66",
-            "classificacao": "Pouco Urgente", "cor_classificacao": "#43a047",
-            "temperatura": "39.0 °C", "pressao": "110/70 mmHg", "frequencia": "85 bpm", "glicemia": "Não aferido",
-            "medicamentos": "Omeprazol 20mg (em jejum)", # <-- NOVO CAMPO
-            "sintomas": "Febre alta isolada, dores no corpo e dor atrás dos olhos.",
-            "ia_insight": "💡 AVALIAÇÃO IA: O quadro de mialgia, febre e dor retro-orbital em área endêmica tem forte correlação com Dengue ou outras arboviroses. Recomenda-se hidratação oral e hemograma."
+    try:
+        dados = buscar_dados_consulta(paciente_id)
+        
+        if not dados:
+            return "Paciente não encontrado no sistema.", 404
+
+        # Aproveitamos a função que o seu colega já criou para gerar a cor exata da classificação
+        cor = cor_por_classificacao(dados.get("classificacao_ia") or "")
+
+        paciente_selecionado = {
+            "id": dados["id_paciente"],
+            "nome": dados["nome_paciente"],
+            "idade": dados["idade_paciente"],
+            "genero": dados["genero_paciente"],
+            "cpf": dados["cpf_paciente"],
+            "classificacao": dados.get("classificacao_ia") or "Não classificada",
+            "cor_classificacao": cor,
+            "sintomas": dados.get("sintomas_relatados") or "Não informado",
+            "ia_insight": dados.get("descricao_ia") or "Aguardando análise da IA",
+            
+            # ATENÇÃO: Os sinais vitais estão como placeholder porque não estão sendo salvos no BD ainda
+            "temperatura": "-- °C", 
+            "pressao": "-- mmHg",
+            "frequencia": "-- bpm",
+            "glicemia": "-- mg/dL",
+            "medicamentos": "Dados não salvos no BD"
         }
-    }
 
-    # Busca o paciente pelo ID. Se não achar, o .get() retorna None
-    paciente_selecionado = banco_de_dados_falso.get(paciente_id)
+        return render_template("consulta.html", paciente=paciente_selecionado)
 
-    # Se alguém digitar um ID que não existe na URL (ex: /consulta/99)
-    if not paciente_selecionado:
-        return "Paciente não encontrado no sistema.", 404
-
-    # Envia os dados daquele paciente específico para a tela
-    return render_template("consulta.html", paciente=paciente_selecionado)
+    except Exception as erro:
+        print("Erro ao carregar dados da consulta:", erro)
+        return "Erro interno ao tentar acessar o banco de dados.", 500
 
 
 
@@ -1594,6 +1580,7 @@ def salvar_triagem():
 # ==================================================
 
 @app.route("/medico")
+
 @login_obrigatorio
 def fila_medico():
     try:
