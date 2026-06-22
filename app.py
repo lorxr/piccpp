@@ -949,7 +949,6 @@ def login():
 
 # -------------------------------------------------------------------
 # DADOS DOS PACIENTES
-# No futuro substituir este dicionário por uma consulta no banco
 # -------------------------------------------------------------------
 
 @app.route("/perfil-paciente/<int:paciente_id>")
