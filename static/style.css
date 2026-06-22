@@ -1811,6 +1811,39 @@ dialog::backdrop {
     text-decoration: underline;
 }
 
+/* ========================================== */
+/* PAINEL DE SINAIS VITAIS (PRONTUÁRIO)       */
+/* ========================================== */
+
+/* Lista que agrupa os sinais vitais */
+.vitals-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #555;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Cada linha (item) da lista */
+.vitals-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Padronização dos ícones digitais SVGs */
+.vitals-icon {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: #6c757d;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
 /* ==================================================
    QUADRO DE TRIAGEM LISTA (CORES)
    ================================================== */
@@ -2334,5 +2367,160 @@ input[type="radio"] {
     height: 20px !important;
     margin: 0 15px 0 0 !important; /* Dá um espacinho entre a bolinha e o texto */
     cursor: pointer;
+}
+
+
+/* ========================================== */
+/* TELA: PERFIL DO PACIENTE                   */
+/* ========================================== */
+
+/* Contentor principal da área de perfil */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+/* Cartão branco que envolve o formulário */
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+}
+
+/* Alinhamento do cabeçalho do cartão */
+.profile-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.profile-card-header h2 {
+    color: #052D73;
+    margin: 0;
+    font-size: 24px;
+}
+
+.profile-subtitle {
+    color: #666;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+/* Crachá de status do cadastro */
+.status-badge {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* Grid de duas colunas para os campos */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Organização de cada rótulo e input */
+.campo-grupo label {
+    font-weight: bold;
+    color: #222; 
+    font-size: 15px;
+}
+
+/* Inputs em modo de leitura (readonly) */
+.campo-input {
+    padding: 14px 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    color: #222; 
+    font-size: 16px;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s ease; 
+}
+
+/* CLASSE NOVA: Ativada quando clicamos em "Editar Cadastro" */
+.campo-input.editando {
+    background-color: #ffffff;
+    border: 1px solid #052D73; 
+    box-shadow: 0 0 5px rgba(5, 45, 115, 0.1);
+}
+
+/* Rodapé de botões do perfil */
+.profile-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+/* Botão principal (Iniciar Triagem) Corrigido */
+.btn-profile-edit {
+    background: #052D73; /* Forçando a cor azul sólida no lugar da variável */
+    color: #ffffff; /* Forçando o texto branco */
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-profile-edit:hover {
+    background: #031d4a; /* Um azul um pouco mais escuro para quando passar o mouse */
+}/* ========================================== */
+/* ESTADO DO BOTÃO DE SALVAR E NOTIFICAÇÃO    */
+/* ========================================== */
+
+/* Classe adicionada via JS para o botão ficar verde sem quebrar a borda */
+.btn-profile-save {
+    background: #2e7d32 !important;
+    color: white !important;
+    border: 2px solid #2e7d32 !important;
+}
+
+/* O Aviso Bonitinho (Toast Notification) */
+.toast-notificacao {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #2e7d32;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    /* Começa invisível e empurrado para baixo */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+/* Quando adicionamos essa classe, ele aparece deslizando */
+.toast-notificacao.mostrar {
+    opacity: 1;
+    transform: translateY(0);
 }
 
