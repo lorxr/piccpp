@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Sistema de Triagem</title>
-    <link rel="icon" type="image/jpeg" href="{{ url_for('static', filename='imagens/logo.jpeg') }}">
-
+    <link
+      rel="icon"
+      type="image/jpeg"
+      href="{{ url_for('static', filename='imagens/logo.jpeg') }}"
+    />
 
     <link
       rel="stylesheet"
@@ -15,9 +18,14 @@
   </head>
 
   <body>
-    <div class="wrapper"> <nav class="sidebar"> <div class="sidebar-brand">
+    <div class="wrapper">
+      <nav class="sidebar">
+        <div class="sidebar-brand">
           <div class="brand-icon">
-            <img src="{{ url_for('static', filename='imagens/Logo-SF.png') }}" alt="Logo">
+            <img
+              src="{{ url_for('static', filename='imagens/Logo-SF.png') }}"
+              alt="Logo"
+            />
           </div>
           <h2>Alvormed.AI</h2>
         </div>
@@ -83,9 +91,7 @@
                     Iniciar nova triagem
                   </a>
 
-                  <a href="/pacientes" class="btn-health">
-                    Ver pacientes
-                  </a>
+                  <a href="/pacientes" class="btn-health"> Ver pacientes </a>
                 </div>
               </div>
 
@@ -126,67 +132,167 @@
                   learning.
                 </p>
               </div>
-            </section> 
-            <div style="width: 100%; display: block; height: 60px;"></div>
+            </section>
+            <div style="width: 100%; display: block; height: 60px"></div>
 
-            <div class="container-triagem" style="width: 100%; display: grid;">
-              
+            <div class="container-triagem" style="width: 100%; display: grid">
               <div class="coluna-triagem borda-vermelha">
-                  <div class="titulo-coluna">Emergência </div>
-                  
-                  {% for paciente in pacientes_vermelhos %}
-                      <div class="card-paciente" style="border-left-color: #e53935;" title="{{ paciente.nome_completo }}">
-                          <div class="nome-paciente">{{ paciente.nome_completo }}</div>
-                          <div class="tempo-espera">Aguardando: {{ paciente.tempo }} min</div>
-                      </div>
-                  {% else %}
-                      <p style="text-align: center; color: #aaa; font-size: 13px;">Nenhum paciente</p>
-                  {% endfor %}
+                <div class="titulo-coluna">Emergência</div>
+
+                {% for paciente in pacientes_vermelhos %}
+                <div
+                  class="card-paciente"
+                  style="border-left-color: #e53935"
+                  title="{{ paciente.nome_completo }}"
+                >
+                  <div class="nome-paciente">{{ paciente.nome_completo }}</div>
+                  <div class="tempo-espera">
+                    Aguardando: {{ paciente.tempo }} min
+                  </div>
+                </div>
+                {% else %}
+                <p style="text-align: center; color: #aaa; font-size: 13px">
+                  Nenhum paciente
+                </p>
+                {% endfor %}
               </div>
 
               <div class="coluna-triagem borda-amarela">
-                  <div class="titulo-coluna">Urgência </div>
-                  
-                  {% for paciente in pacientes_amarelos %}
-                      <div class="card-paciente" style="border-left-color: #fdd835;" title="{{ paciente.nome_completo }}">
-                          <div class="nome-paciente">{{ paciente.nome_completo }}</div>
-                          <div class="tempo-espera">Aguardando: {{ paciente.tempo }} min</div>
-                      </div>
-                  {% else %}
-                      <p style="text-align: center; color: #aaa; font-size: 13px;">Nenhum paciente</p>
-                  {% endfor %}
+                <div class="titulo-coluna">Urgência</div>
+
+                {% for paciente in pacientes_amarelos %}
+                <div
+                  class="card-paciente"
+                  style="border-left-color: #fdd835"
+                  title="{{ paciente.nome_completo }}"
+                >
+                  <div class="nome-paciente">{{ paciente.nome_completo }}</div>
+                  <div class="tempo-espera">
+                    Aguardando: {{ paciente.tempo }} min
+                  </div>
+                </div>
+                {% else %}
+                <p style="text-align: center; color: #aaa; font-size: 13px">
+                  Nenhum paciente
+                </p>
+                {% endfor %}
               </div>
 
               <div class="coluna-triagem borda-verde">
-                  <div class="titulo-coluna">Pouco Urgente </div>
-                  
-                  {% for paciente in pacientes_verdes %}
-                      <div class="card-paciente" style="border-left-color: #43a047;" title="{{ paciente.nome_completo }}">
-                          <div class="nome-paciente">{{ paciente.nome_completo }}</div>
-                          <div class="tempo-espera">Aguardando: {{ paciente.tempo }} min</div>
-                      </div>
-                  {% else %}
-                      <p style="text-align: center; color: #aaa; font-size: 13px;">Nenhum paciente</p>
-                  {% endfor %}
+                <div class="titulo-coluna">Pouco Urgente</div>
+
+                {% for paciente in pacientes_verdes %}
+                <div
+                  class="card-paciente"
+                  style="border-left-color: #43a047"
+                  title="{{ paciente.nome_completo }}"
+                >
+                  <div class="nome-paciente">{{ paciente.nome_completo }}</div>
+                  <div class="tempo-espera">
+                    Aguardando: {{ paciente.tempo }} min
+                  </div>
+                </div>
+                {% else %}
+                <p style="text-align: center; color: #aaa; font-size: 13px">
+                  Nenhum paciente
+                </p>
+                {% endfor %}
               </div>
 
               <div class="coluna-triagem borda-azul">
-                  <div class="titulo-coluna">Não Urgente </div>
-                  
-                  {% for paciente in pacientes_azuis %}
-                      <div class="card-paciente" style="border-left-color: #1e88e5;" title="{{ paciente.nome_completo }}">
-                          <div class="nome-paciente">{{ paciente.nome_completo }}</div>
-                          <div class="tempo-espera">Aguardando: {{ paciente.tempo }} min</div>
-                      </div>
-                  {% else %}
-                      <p style="text-align: center; color: #aaa; font-size: 13px;">Nenhum paciente</p>
-                  {% endfor %}
-              </div>
+                <div class="titulo-coluna">Não Urgente</div>
 
+                {% for paciente in pacientes_azuis %}
+                <div
+                  class="card-paciente"
+                  style="border-left-color: #1e88e5"
+                  title="{{ paciente.nome_completo }}"
+                >
+                  <div class="nome-paciente">{{ paciente.nome_completo }}</div>
+                  <div class="tempo-espera">
+                    Aguardando: {{ paciente.tempo }} min
+                  </div>
+                </div>
+                {% else %}
+                <p style="text-align: center; color: #aaa; font-size: 13px">
+                  Nenhum paciente
+                </p>
+                {% endfor %}
+              </div>
             </div>
-            </div> {% endblock %}
+          </div>
+          {% endblock %}
         </section>
       </main>
     </div>
+    <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
+      <div class="loading-dialog" role="dialog" aria-modal="true">
+        <div class="loading-spinner"></div>
+
+        <div>
+          <strong id="loadingTexto">Carregando...</strong>
+          <p>Aguarde um instante.</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function mostrarLoading(texto = "Carregando...") {
+        const overlay = document.getElementById("loadingOverlay");
+        const textoLoading = document.getElementById("loadingTexto");
+
+        if (!overlay) return;
+
+        textoLoading.innerText = texto;
+        overlay.classList.add("ativo");
+        overlay.setAttribute("aria-hidden", "false");
+      }
+
+      function esconderLoading() {
+        const overlay = document.getElementById("loadingOverlay");
+
+        if (!overlay) return;
+
+        overlay.classList.remove("ativo");
+        overlay.setAttribute("aria-hidden", "true");
+      }
+
+      window.addEventListener("pageshow", esconderLoading);
+
+      document.addEventListener("submit", function (event) {
+        const form = event.target;
+
+        if (event.defaultPrevented) return;
+        if (!form.checkValidity()) return;
+
+        const botaoClicado = event.submitter;
+        const texto =
+          botaoClicado?.dataset.loadingText ||
+          form.dataset.loadingText ||
+          "Carregando...";
+
+        mostrarLoading(texto);
+      });
+
+      document.addEventListener("click", function (event) {
+        const link = event.target.closest("a");
+
+        if (!link) return;
+
+        const href = link.getAttribute("href");
+
+        if (
+          !href ||
+          href.startsWith("#") ||
+          href.startsWith("javascript:") ||
+          link.target === "_blank" ||
+          link.dataset.noLoading === "true"
+        ) {
+          return;
+        }
+
+        mostrarLoading(link.dataset.loadingText || "Carregando...");
+      });
+    </script>
   </body>
 </html>

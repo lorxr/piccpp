@@ -1,125 +1,288 @@
-<!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Prontuário Digital - Alvormed.AI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-  </head>
+{% extends "index.html" %} {% block conteudo %}
 
-  <body>
-    <div class="wrapper">
-      <nav class="sidebar">
-        <div class="sidebar-brand">
-          <div class="brand-icon">
-            <img src="{{ url_for('static', filename='imagens/Logo-SF.png') }}" alt="Logo">
-          </div>
-          <h2>Alvormed.AI</h2>
-        </div>
-        <hr />
-        <ul>
-          <li><a href="/inicio"><span>Início</span></a></li>
-          <li><a href="/medico"><span>Voltar para Fila</span></a></li>
-        </ul>
-      </nav>
+<div
+  style="
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-top: 10px;
+  "
+>
+  <div
+    style="
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 10px;
+    "
+  >
+    <div>
+      <h1 style="color: #222; margin: 0 0 5px 0; font-size: 28px">
+        {{ paciente.nome }}
+      </h1>
 
-      <main class="main-content" style="height: auto; min-height: 100vh; overflow-y: auto; width: 100%;">
-        <header class="top-header" style="justify-content: flex-start; gap: 15px;">
-          <a href="/medico" style="text-decoration: none; color: #555; font-size: 20px;"> </a>
-          <div>
-            <h3>Prontuário Digital </h3>
-          </div>
-        </header>
-
-        <section class="content" style="width: 100%;">
-          {% block conteudo %}
-          
-          <div style="display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 1000px; margin: 0 auto; padding-top: 10px;">
-            
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px;">
-                <div>
-                    <h1 style="color: #222; margin: 0 0 5px 0; font-size: 28px;">{{ paciente.nome }}</h1>
-                    <p style="color: #666; margin: 0;">{{ paciente.idade }} anos | {{ paciente.genero }} | CPF: {{ paciente.cpf }}</p>
-                </div>
-                <div style="text-align: right;">
-                    <span style="background-color: {{ paciente.cor_classificacao }}20; color: {{ paciente.cor_classificacao }}; padding: 8px 16px; border-radius: 20px; font-weight: bold; border: 1px solid {{ paciente.cor_classificacao }};">
-                        {{ paciente.classificacao }}
-                    </span>
-                </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                
-              <div style="background: white; border-radius: 12px; padding: 20px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-                    <h3 style="margin-top: 0; color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Sinais Vitais</h3>
-                    
-                    <ul class="vitals-list">
-                        
-                        <li class="vitals-item">
-                            <svg class="vitals-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
-                            <span><strong>Temperatura:</strong> {{ paciente.temperatura }}</span>
-                        </li>
-
-                        <li class="vitals-item">
-                            <svg class="vitals-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 12h3l3-9 4 18 3-10 3 1h3"/></svg>
-                            <span><strong>Pressão Arterial:</strong> {{ paciente.pressao }}</span>
-                        </li>
-
-                        <li class="vitals-item">
-                            <svg class="vitals-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-                            <span><strong>Frequência Cardíaca:</strong> {{ paciente.frequencia }}</span>
-                        </li>
-
-                        <li class="vitals-item">
-                            <svg class="vitals-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-13-7-13S5 10.7 5 15a7 7 0 0 0 7 7Z"/></svg>
-                            <span><strong>Glicemia:</strong> {{ paciente.glicemia }}</span>
-                        </li>
-
-                        <li class="vitals-item">
-                            <svg class="vitals-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
-                            <span><strong>Uso Contínuo:</strong> {{ paciente.medicamentos }}</span>
-                        </li>
-
-                    </ul>
-                </div>
-
-                <div style="background: white; border-radius: 12px; padding: 20px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-                    <h3 style="margin-top: 0; color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Principais Sintomas</h3>
-                    <p style="color: #555; line-height: 1.6; font-size: 15px;">
-                        "{{ paciente.sintomas }}"
-                    </p>
-                </div>
-
-            </div>
-
-            <div style="background: linear-gradient(135deg, rgba(5, 45, 115, 0.05), rgba(45, 175, 185, 0.1)); border-radius: 12px; padding: 20px; border: 1px solid rgba(45, 175, 185, 0.3); box-shadow: 0 4px 12px rgba(0,0,0,0.02); margin-top: 10px;">
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                    <div style="width: 30px; height: 30px; background: var(--gradiente-oficial); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                        <img src="{{ url_for('static', filename='imagens/Logo-SF.png') }}" alt="IA" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-                    </div>
-                    <h3 style="margin: 0; color: #052D73;">Análise Alvormed.AI</h3>
-                </div>
-                <p style="color: #222; line-height: 1.6; font-weight: 500; margin: 0;">
-                    {{ paciente.ia_insight }}
-                </p>
-            </div>
-
-            <div style="background: white; border-radius: 12px; padding: 20px; border: 1px solid #e0e0e0; box-shadow: 0 4px 12px rgba(0,0,0,0.02); margin-top: 10px;">
-                <h3 style="margin-top: 0; color: #333; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">Evolução e Conduta Médica</h3>
-                <textarea placeholder="Digite as anotações do atendimento, prescrições e conduta tomada..." style="width: 100%; height: 150px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; font-family: inherit; resize: vertical; outline: none; box-sizing: border-box;"></textarea>
-                
-                <div style="display: flex; justify-content: flex-end; margin-top: 15px; gap: 10px;">
-                    <button style="background: #ffffff; color: #000000; padding: 12px 24px; border-radius: 8px; font-weight: bold; border: 2px solid #052D73; cursor: pointer;">
-                        Finalizar e Salvar
-                    </button>
-                </div>
-            </div>
-
-          </div>
-
-          {% endblock %}
-        </section>
-      </main>
+      <p style="color: #666; margin: 0">
+        {{ paciente.idade }} anos | {{ paciente.genero }} | CPF: {{ paciente.cpf
+        }}
+      </p>
     </div>
-  </body>
-</html>
+
+    <div style="text-align: right">
+      <span
+        style="background-color: {{ paciente.cor_classificacao }}20; color: {{ paciente.cor_classificacao }}; padding: 8px 16px; border-radius: 20px; font-weight: bold; border: 1px solid {{ paciente.cor_classificacao }};"
+      >
+        {{ paciente.classificacao }}
+      </span>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: flex-start; margin-bottom: 5px">
+    <a
+      href="/medico"
+      data-loading-text="Voltando para a fila médica..."
+      style="text-decoration: none; color: #052d73; font-weight: bold"
+    >
+      ← Voltar para Fila
+    </a>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
+    <div
+      style="
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+      "
+    >
+      <h3
+        style="
+          margin-top: 0;
+          color: #333;
+          border-bottom: 2px solid #f0f0f0;
+          padding-bottom: 10px;
+        "
+      >
+        Sinais Vitais
+      </h3>
+
+      <ul class="vitals-list">
+        <li class="vitals-item">
+          <svg
+            class="vitals-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z" />
+          </svg>
+          <span><strong>Temperatura:</strong> {{ paciente.temperatura }}</span>
+        </li>
+
+        <li class="vitals-item">
+          <svg
+            class="vitals-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path d="M3 12h3l3-9 4 18 3-10 3 1h3" />
+          </svg>
+          <span><strong>Pressão Arterial:</strong> {{ paciente.pressao }}</span>
+        </li>
+
+        <li class="vitals-item">
+          <svg
+            class="vitals-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+            />
+          </svg>
+          <span
+            ><strong>Frequência Cardíaca:</strong> {{ paciente.frequencia
+            }}</span
+          >
+        </li>
+
+        <li class="vitals-item">
+          <svg
+            class="vitals-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 22a7 7 0 0 0 7-7c0-4.3-7-13-7-13S5 10.7 5 15a7 7 0 0 0 7 7Z"
+            />
+          </svg>
+          <span><strong>Glicemia:</strong> {{ paciente.glicemia }}</span>
+        </li>
+
+        <li class="vitals-item">
+          <svg
+            class="vitals-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"
+            />
+            <path d="m8.5 8.5 7 7" />
+          </svg>
+          <span
+            ><strong>Uso Contínuo:</strong> {{ paciente.medicamentos }}</span
+          >
+        </li>
+      </ul>
+    </div>
+
+    <div
+      style="
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+      "
+    >
+      <h3
+        style="
+          margin-top: 0;
+          color: #333;
+          border-bottom: 2px solid #f0f0f0;
+          padding-bottom: 10px;
+        "
+      >
+        Principais Sintomas
+      </h3>
+
+      <p style="color: #555; line-height: 1.6; font-size: 15px">
+        "{{ paciente.sintomas }}"
+      </p>
+    </div>
+  </div>
+
+  <div
+    style="
+      background: linear-gradient(
+        135deg,
+        rgba(5, 45, 115, 0.05),
+        rgba(45, 175, 185, 0.1)
+      );
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(45, 175, 185, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+      margin-top: 10px;
+    "
+  >
+    <div
+      style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px"
+    >
+      <div
+        style="
+          width: 30px;
+          height: 30px;
+          background: var(--gradiente-oficial);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <img
+          src="{{ url_for('static', filename='imagens/Logo-SF.png') }}"
+          alt="IA"
+          style="
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+          "
+        />
+      </div>
+
+      <h3 style="margin: 0; color: #052d73">Análise Alvormed.AI</h3>
+    </div>
+
+    <p style="color: #222; line-height: 1.6; font-weight: 500; margin: 0">
+      {{ paciente.ia_insight }}
+    </p>
+  </div>
+
+  <div
+    style="
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+      margin-top: 10px;
+    "
+  >
+    <h3
+      style="
+        margin-top: 0;
+        color: #333;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 10px;
+      "
+    >
+      Evolução e Conduta Médica
+    </h3>
+
+    <form
+      method="POST"
+      action="/salvar-prontuario"
+      data-loading-text="Salvando prontuário..."
+    >
+      <textarea
+        name="conduta_medica"
+        placeholder="Digite as anotações do atendimento, prescrições e conduta tomada..."
+        style="
+          width: 100%;
+          height: 150px;
+          padding: 15px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-size: 15px;
+          font-family: inherit;
+          resize: vertical;
+          outline: none;
+          box-sizing: border-box;
+        "
+      ></textarea>
+
+      <div
+        style="
+          display: flex;
+          justify-content: flex-end;
+          margin-top: 15px;
+          gap: 10px;
+        "
+      >
+        <button
+          type="submit"
+          data-loading-text="Salvando prontuário..."
+          style="
+            background: #ffffff;
+            color: #000000;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            border: 2px solid #052d73;
+            cursor: pointer;
+          "
+        >
+          Finalizar e Salvar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
