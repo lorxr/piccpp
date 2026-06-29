@@ -126,7 +126,13 @@
             Voltar
           </button>
 
-          <button type="submit" class="btn-health">Gerar Triagem</button>
+          <button
+            type="submit"
+            class="btn-health"
+            data-loading-text="Gerando pré-análise..."
+          >
+            Gerar Triagem
+          </button>
         </div>
       </div>
     </form>
@@ -168,7 +174,7 @@
         data-nome="{{ paciente.nome_paciente }}"
         data-cpf="{{ paciente.cpf_paciente }}"
         data-idade="{{ paciente.idade_paciente }}"
-        data-genero="{{ paciente.genero_paciente }}" 
+        data-genero="{{ paciente.genero_paciente }}"
         onclick="selecionarPaciente(this)"
       >
         <strong>{{ paciente.nome_paciente }}</strong>

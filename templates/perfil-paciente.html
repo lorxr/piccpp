@@ -1,155 +1,181 @@
-<!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Perfil do Paciente - Alvormed.AI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-  </head>
+{% extends "index.html" %} {% block conteudo %}
 
-  <body>
-    <div class="wrapper">
-      <nav class="sidebar">
-        <div class="sidebar-brand">
-          <div class="brand-icon">
-            <img src="{{ url_for('static', filename='imagens/Logo-SF.png') }}" alt="Logo">
-          </div>
-          <h2>Alvormed.AI</h2>
-        </div>
-        <hr />
-        <ul>
-          <li><a href="/inicio"><span>Início</span></a></li>
-          <li><a href="/nova-triagem"><span>Nova Triagem</span></a></li>
-          <li><a href="/cadastrar-paciente"><span>Cadastrar Paciente</span></a></li>
-          <li><a href="/medico" style="background: var(--gradiente-oficial); color: white; border-radius: 8px;"><span>Atendimento</span></a></li>
-          <li><a href="/sair"><span>Sair</span></a></li>
-        </ul>
-      </nav>
-
-      <main class="main-content" style="height: auto; min-height: 100vh; overflow-y: auto; width: 100%;">
-        <header class="top-header" style="justify-content: flex-start; gap: 15px;">
-          <a href="/pacientes" style="text-decoration: none; color: #555; font-size: 20px;"> </a>
-          <div>
-            <h3>Perfil do Paciente</h3>
-          </div>
-        </header>
-
-        <section class="content" style="width: 100%;">
-          {% block conteudo %}
-          
-          <div class="profile-container">
-            
-            <div class="profile-card">
-                
-                <div class="profile-card-header">
-                    <h2>Dados do paciente</h2>
-                    <span class="status-badge">Cadastro Ativo</span>
-                </div>
-                <p class="profile-subtitle">Informações completas do cadastro do paciente.</p>
-
-                <div id="alertaSalvo" class="alerta-sistema alerta-sucesso" style="display: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    <span>Dados do paciente atualizados e salvos com sucesso!</span>
-                </div>
-
-                <div class="profile-grid">
-                    
-                    <div class="campo-grupo">
-                        <label>Nome completo</label>
-                        <input type="text" class="campo-input" value="{{ paciente.nome }}" readonly>
-                    </div>
-                    
-                    <div class="campo-grupo">
-                        <label>CPF</label>
-                        <input type="text" class="campo-input" value="{{ paciente.cpf }}" readonly>
-                    </div>
-
-                    <div class="campo-grupo">
-                        <label>Data de nascimento</label>
-                        <input type="text" class="campo-input" value="{{ paciente.data_nascimento }}" readonly>
-                    </div>
-                    
-                    <div class="campo-grupo">
-                        <label>Idade</label>
-                        <input type="text" class="campo-input" value="{{ paciente.idade }} anos" readonly>
-                    </div>
-
-                    <div class="campo-grupo">
-                        <label>Gênero</label>
-                        <input type="text" class="campo-input" value="{{ paciente.genero }}" readonly>
-                    </div>
-                    
-                    <div class="campo-grupo">
-                        <label>Telefone</label>
-                        <input type="text" class="campo-input" value="{{ paciente.telefone }}" readonly>
-                    </div>
-
-                    <div class="campo-grupo">
-                        <label>Cidade</label>
-                        <input type="text" class="campo-input" value="{{ paciente.cidade }}" readonly>
-                    </div>
-                    
-                    <div class="campo-grupo">
-                        <label>Endereço</label>
-                        <input type="text" class="campo-input" value="{{ paciente.endereco }}" readonly>
-                    </div>
-
-                </div>
-
-                <div class="profile-actions">
-                    <button id="btnEditar" class="btn-profile-edit">
-                        Editar Cadastro
-                    </button>
-                </div>
-
-            </div>
-
-          </div>
-
-          <script>
-            const btnEditar = document.getElementById('btnEditar');
-            const inputs = document.querySelectorAll('.campo-input');
-            const alerta = document.getElementById('alertaSalvo');
-            let modoEdicao = false;
-
-            btnEditar.addEventListener('click', function() {
-                modoEdicao = !modoEdicao; // Inverte o estado
-
-                if (modoEdicao) {
-                    // MODO EDIÇÃO ATIVADO
-                    btnEditar.innerText = "Salvar Cadastro";
-                    btnEditar.classList.add('btn-profile-save'); 
-
-                    inputs.forEach(input => {
-                        input.removeAttribute('readonly'); 
-                        input.classList.add('editando');   
-                    });
-                    
-                    inputs[0].focus();
-                } else {
-                    // MODO EDIÇÃO DESATIVADO (SALVANDO)
-                    btnEditar.innerText = "Editar Cadastro";
-                    btnEditar.classList.remove('btn-profile-save'); 
-
-                    inputs.forEach(input => {
-                        input.setAttribute('readonly', true); 
-                        input.classList.remove('editando');   
-                    });
-
-                    // Mostra o alerta
-                    alerta.style.display = 'flex';
-                    
-                    // Esconde o alerta após 3 segundos
-                    setTimeout(function() {
-                        alerta.style.display = 'none';
-                    }, 3000);
-                }
-            });
-          </script>
-
-          {% endblock %}
-        </section>
-      </main>
+<div class="profile-container">
+  <div class="profile-card">
+    <div class="profile-card-header">
+      <h2>Dados do paciente</h2>
+      <span class="status-badge">Cadastro Ativo</span>
     </div>
-  </body>
-</html>
+
+    <p class="profile-subtitle">
+      Informações completas do cadastro do paciente.
+    </p>
+
+    <div style="margin-bottom: 20px">
+      <a
+        href="/pacientes"
+        data-loading-text="Voltando para pacientes..."
+        style="text-decoration: none; color: #052d73; font-weight: bold"
+      >
+        ← Voltar para pacientes
+      </a>
+    </div>
+
+    <div
+      id="alertaSalvo"
+      class="alerta-sistema alerta-sucesso"
+      style="display: none"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+
+      <span>Dados do paciente atualizados e salvos com sucesso!</span>
+    </div>
+
+    <div class="profile-grid">
+      <div class="campo-grupo">
+        <label>Nome completo</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.nome }}"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>CPF</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.cpf }}"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>Data de nascimento</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.data_nascimento }}"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>Idade</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.idade }} anos"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>Gênero</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.genero }}"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>Telefone</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.telefone }}"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>Cidade</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.cidade }}"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>Endereço</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.endereco }}"
+          readonly
+        />
+      </div>
+    </div>
+
+    <div class="profile-actions">
+      <button id="btnEditar" type="button" class="btn-profile-edit">
+        Editar Cadastro
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const btnEditar = document.getElementById("btnEditar");
+  const inputs = document.querySelectorAll(".campo-input");
+  const alerta = document.getElementById("alertaSalvo");
+
+  let modoEdicao = false;
+
+  if (btnEditar) {
+    btnEditar.addEventListener("click", function () {
+      modoEdicao = !modoEdicao;
+
+      if (modoEdicao) {
+        btnEditar.innerText = "Salvar Cadastro";
+        btnEditar.classList.add("btn-profile-save");
+
+        inputs.forEach(function (input) {
+          input.removeAttribute("readonly");
+          input.classList.add("editando");
+        });
+
+        if (inputs.length > 0) {
+          inputs[0].focus();
+        }
+      } else {
+        btnEditar.innerText = "Editar Cadastro";
+        btnEditar.classList.remove("btn-profile-save");
+
+        inputs.forEach(function (input) {
+          input.setAttribute("readonly", true);
+          input.classList.remove("editando");
+        });
+
+        if (alerta) {
+          alerta.style.display = "flex";
+
+          setTimeout(function () {
+            alerta.style.display = "none";
+          }, 3000);
+        }
+      }
+    });
+  }
+</script>
+
+{% endblock %}
