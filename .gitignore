@@ -94,3 +94,6 @@ desktop.ini
 
 uploads/
 media/
+
+# Arquivos temporários da triagem
+temp/

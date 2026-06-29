@@ -8,13 +8,23 @@
         <h2>Pré-análise da Triagem</h2>
       </div>
 
-      <span class="status-pre-analise"> Aguardando revisão </span>
+      <span class="status-pre-analise">Aguardando revisão</span>
     </div>
 
     <div class="resumo-atendimento-pequeno">
       <div>
         <span>Paciente</span>
         <strong>{{ paciente_nome }}</strong>
+      </div>
+
+      <div>
+        <span>Idade</span>
+        <strong>{{ idade }}</strong>
+      </div>
+
+      <div>
+        <span>Gênero</span>
+        <strong>{{ genero }}</strong>
       </div>
 
       <div>
@@ -41,13 +51,19 @@
     <form action="/salvar-triagem" method="POST" class="form-pre-analise">
       <input type="hidden" name="paciente_id" value="{{ paciente_id }}" />
       <input type="hidden" name="paciente_nome" value="{{ paciente_nome }}" />
+      <input type="hidden" name="idade" value="{{ idade }}" />
+      <input type="hidden" name="genero" value="{{ genero }}" />
       <input type="hidden" name="temperatura" value="{{ temperatura }}" />
       <input type="hidden" name="pressao" value="{{ pressao }}" />
       <input type="hidden" name="frequencia" value="{{ frequencia }}" />
       <input type="hidden" name="glicemia" value="{{ glicemia }}" />
       <input type="hidden" name="medicamentos" value="{{ medicamentos }}" />
       <input type="hidden" name="sintomas" value="{{ sintomas }}" />
-      <input type="hidden" name="palavras_chave" value="{{ palavras_chave_json }}" />
+      <input
+        type="hidden"
+        name="palavras_chave"
+        value="{{ palavras_chave_json }}"
+      />
 
       <div class="area-texto-llm">
         <div class="topo-texto-llm">
@@ -74,13 +90,18 @@
         >
 {{ pre_analise }}</textarea
         >
-        >
       </div>
 
       <div class="botoes-pre-analise">
-        <a href="/nova-triagem" class="btn-health-outline"> Voltar </a>
+        <a href="/nova-triagem" class="btn-health-outline">Voltar</a>
 
-        <button type="submit" class="btn-health">Salvar triagem</button>
+        <button
+          type="submit"
+          class="btn-health"
+          data-loading-text="Salvando triagem..."
+        >
+          Salvar triagem
+        </button>
       </div>
     </form>
   </div>

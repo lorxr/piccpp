@@ -1,0 +1,12 @@
+{
+    "idade": "42",
+    "genero": "Masculino",
+    "sintomas": "Paciente relata Intenso cansaço e sono",
+    "sinais_vitais": {
+        "temperatura": "37",
+        "pressao": "6,10",
+        "frequencia": "50",
+        "glicemia": "135"
+    },
+    "medicamentos": "Não"
+}

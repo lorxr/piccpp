@@ -1,0 +1,181 @@
+{% extends "index.html" %} {% block conteudo %}
+
+<div class="profile-container">
+  <div class="profile-card">
+    <div class="profile-card-header">
+      <h2>Dados do paciente</h2>
+      <span class="status-badge">Cadastro Ativo</span>
+    </div>
+
+    <p class="profile-subtitle">
+      Informações completas do cadastro do paciente.
+    </p>
+
+    <div style="margin-bottom: 20px">
+      <a
+        href="/pacientes"
+        data-loading-text="Voltando para pacientes..."
+        style="text-decoration: none; color: #052d73; font-weight: bold"
+      >
+        ← Voltar para pacientes
+      </a>
+    </div>
+
+    <div
+      id="alertaSalvo"
+      class="alerta-sistema alerta-sucesso"
+      style="display: none"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+
+      <span>Dados do paciente atualizados e salvos com sucesso!</span>
+    </div>
+
+    <div class="profile-grid">
+      <div class="campo-grupo">
+        <label>Nome completo</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.nome }}"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>CPF</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.cpf }}"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>Data de nascimento</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.data_nascimento }}"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>Idade</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.idade }} anos"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>Gênero</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.genero }}"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>Telefone</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.telefone }}"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>Cidade</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.cidade }}"
+          readonly
+        />
+      </div>
+
+      <div class="campo-grupo">
+        <label>Endereço</label>
+        <input
+          type="text"
+          class="campo-input"
+          value="{{ paciente.endereco }}"
+          readonly
+        />
+      </div>
+    </div>
+
+    <div class="profile-actions">
+      <button id="btnEditar" type="button" class="btn-profile-edit">
+        Editar Cadastro
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const btnEditar = document.getElementById("btnEditar");
+  const inputs = document.querySelectorAll(".campo-input");
+  const alerta = document.getElementById("alertaSalvo");
+
+  let modoEdicao = false;
+
+  if (btnEditar) {
+    btnEditar.addEventListener("click", function () {
+      modoEdicao = !modoEdicao;
+
+      if (modoEdicao) {
+        btnEditar.innerText = "Salvar Cadastro";
+        btnEditar.classList.add("btn-profile-save");
+
+        inputs.forEach(function (input) {
+          input.removeAttribute("readonly");
+          input.classList.add("editando");
+        });
+
+        if (inputs.length > 0) {
+          inputs[0].focus();
+        }
+      } else {
+        btnEditar.innerText = "Editar Cadastro";
+        btnEditar.classList.remove("btn-profile-save");
+
+        inputs.forEach(function (input) {
+          input.setAttribute("readonly", true);
+          input.classList.remove("editando");
+        });
+
+        if (alerta) {
+          alerta.style.display = "flex";
+
+          setTimeout(function () {
+            alerta.style.display = "none";
+          }, 3000);
+        }
+      }
+    });
+  }
+</script>
+
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends "index.html" %} {% block conteudo %}
+
+<div
+  style="
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-top: 20px;
+  "
+>
+  <div>
+    <h2 style="color: #333; margin-bottom: 5px">Base de Pacientes</h2>
+    <p style="color: #666; margin-bottom: 10px">
+      Consulte o histórico ou inicie um novo atendimento para os pacientes
+      cadastrados.
+    </p>
+  </div>
+
+  <input
+    type="text"
+    id="buscaPacienteGeral"
+    placeholder="Buscar por nome ou CPF..."
+    style="
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      outline: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    "
+  />
+
+  <div
+    id="containerPacientesGeral"
+    style="display: flex; flex-direction: column; gap: 15px; width: 100%"
+  >
+    {% for paciente in pacientes %}
+
+    <div
+      class="card-paciente-lista"
+      style="
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      "
+    >
+      <div class="info-paciente">
+        <h3 class="nome-paciente" style="margin: 0 0 5px 0; color: #222">
+          {{ paciente.nome }}
+        </h3>
+
+        <p style="margin: 0; color: #555; font-size: 14px">
+          <strong>CPF:</strong>
+          <span class="cpf-paciente">{{ paciente.cpf }}</span>
+          |
+          <strong>Idade:</strong> {{ paciente.idade }} anos |
+          <strong>Gênero:</strong> {{ paciente.genero }}
+        </p>
+      </div>
+
+      <div>
+        <a
+          href="/perfil-paciente/{{ paciente.id }}"
+          data-loading-text="Abrindo perfil do paciente..."
+          style="
+            background: #ffffff;
+            color: #000000;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            border: 2px solid #052d73;
+            display: inline-block;
+          "
+        >
+          Ver mais
+        </a>
+      </div>
+    </div>
+
+    {% else %}
+
+    <div
+      style="
+        text-align: center;
+        padding: 40px;
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+      "
+    >
+      <h3 style="color: #888">Nenhum paciente encontrado.</h3>
+    </div>
+
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  const campoBuscaPacienteGeral = document.getElementById("buscaPacienteGeral");
+
+  if (campoBuscaPacienteGeral) {
+    campoBuscaPacienteGeral.addEventListener("keyup", function () {
+      const filtro = this.value.toLowerCase();
+      const cartoes = document.querySelectorAll(".card-paciente-lista");
+
+      cartoes.forEach(function (cartao) {
+        const nome = cartao
+          .querySelector(".nome-paciente")
+          .innerText.toLowerCase();
+        const cpf = cartao
+          .querySelector(".cpf-paciente")
+          .innerText.toLowerCase();
+
+        if (nome.includes(filtro) || cpf.includes(filtro)) {
+          cartao.style.display = "flex";
+        } else {
+          cartao.style.display = "none";
+        }
+      });
+    });
+  }
+</script>
+
+{% endblock %}

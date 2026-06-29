@@ -1,0 +1,32 @@
+RESPOSTA DA LLM - TRIAGEM HOSPITALAR
+Data/Hora: 01/06/2026 20:49:10
+
+============================================================
+TRIAGEM RECEBIDA DO SERVIDOR
+============================================================
+
+**Classificação de Manchester:** [AMARELO]
+
+**Justificativa Clínica:** A classificação como "Urgente" se baseia nos sintomas relatados pelo paciente, tais como intenso sono e cansaço, que podem indicar problemas hormonais ou metabólicos. Além disso, a frequência cardíaca baixa (50 BPM) pode sugerir um possível problema cardíaco ou neurológico.
+
+**Pré-Diagnóstico Clínico:** Com base nos sintomas de sono intenso e cansaço, assim como na frequência cardíaca baixa, nota-se que estes podem estar relacionados a:
+
+- **Hipotireoidismo**: O paciente apresenta sintomas semelhantes ao quadro clínico do hipotireoidismo, caracterizado por sono excessivo, perda de energia e diminuição da frequência cardíaca. Além disso, o nível de glicemia elevada pode estar relacionado a uma possível desregulação metabólica.
+- **Desbalance Hormonal**: O uso contínuo do Durateston (uma terapia hormonal) sugere que há alterações hormonais em andamento no paciente. Isso pode contribuir para os sintomas relatados, incluindo o sono excessivo e a frequência cardíaca baixa.
+- **Síncope ou Problema Neurológico**: A tontura pode estar relacionada a um problema neurológico ou cardíaco. Contudo, com base nos dados disponíveis, essa opção parece menos provável.
+
+**Possíveis Procedimentos / Condutas Iniciais:** Para esclarecer os sintomas e a possível causa, sugiro:
+- Avaliação do fígado (para verificar se há algum problema hepático relacionado ao uso contínuo de anabólicos).
+- Monitoramento frequente da glicemia para ajustes na terapia.
+- Avaliação da função tireoideira.
+
+**Alerta Médico:** É fundamental a avaliação médica presencial e diagnóstica detalhada, pois a triagem realizada aqui é apenas uma orientação baseada nos dados disponíveis. O diagnóstico definitivo só pode ser feito após exames e investigações adicionais.
+
+============================================================
+JSON COMPLETO DA RESPOSTA
+============================================================
+
+{
+    "sucesso": true,
+    "triagem": "**Classificação de Manchester:** [AMARELO]\n\n**Justificativa Clínica:** A classificação como \"Urgente\" se baseia nos sintomas relatados pelo paciente, tais como intenso sono e cansaço, que podem indicar problemas hormonais ou metabólicos. Além disso, a frequência cardíaca baixa (50 BPM) pode sugerir um possível problema cardíaco ou neurológico.\n\n**Pré-Diagnóstico Clínico:** Com base nos sintomas de sono intenso e cansaço, assim como na frequência cardíaca baixa, nota-se que estes podem estar relacionados a:\n\n- **Hipotireoidismo**: O paciente apresenta sintomas semelhantes ao quadro clínico do hipotireoidismo, caracterizado por sono excessivo, perda de energia e diminuição da frequência cardíaca. Além disso, o nível de glicemia elevada pode estar relacionado a uma possível desregulação metabólica.\n- **Desbalance Hormonal**: O uso contínuo do Durateston (uma terapia hormonal) sugere que há alterações hormonais em andamento no paciente. Isso pode contribuir para os sintomas relatados, incluindo o sono excessivo e a frequência cardíaca baixa.\n- **Síncope ou Problema Neurológico**: A tontura pode estar relacionada a um problema neurológico ou cardíaco. Contudo, com base nos dados disponíveis, essa opção parece menos provável.\n\n**Possíveis Procedimentos / Condutas Iniciais:** Para esclarecer os sintomas e a possível causa, sugiro:\n- Avaliação do fígado (para verificar se há algum problema hepático relacionado ao uso contínuo de anabólicos).\n- Monitoramento frequente da glicemia para ajustes na terapia.\n- Avaliação da função tireoideira.\n\n**Alerta Médico:** É fundamental a avaliação médica presencial e diagnóstica detalhada, pois a triagem realizada aqui é apenas uma orientação baseada nos dados disponíveis. O diagnóstico definitivo só pode ser feito após exames e investigações adicionais."
+}

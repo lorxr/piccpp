@@ -1,0 +1,131 @@
+{% extends "index.html" %} {% block conteudo %}
+
+<div class="pagina-cadastro-paciente">
+  <div class="cadastro-paciente-header">
+    <div>
+      <h1>Cadastrar Paciente</h1>
+
+      <p>
+        Registre os dados básicos do paciente para que ele possa ser vinculado
+        posteriormente a uma nova triagem.
+      </p>
+    </div>
+
+    <a href="/inicio" class="btn-health-outline">Voltar ao início</a>
+  </div>
+
+  {% if erro %}
+  <div class="alerta alerta-erro">{{ erro }}</div>
+  {% endif %} {% if sucesso %}
+  <div class="alerta alerta-sucesso">{{ sucesso }}</div>
+  {% endif %}
+
+  <div class="card-cadastro-paciente">
+    <div class="cadastro-card-header">
+      <div>
+        <h2>Dados do paciente</h2>
+        <p>Preencha as informações principais do cadastro.</p>
+      </div>
+
+      <span class="cadastro-status">Cadastro</span>
+    </div>
+
+    <form
+      action="/cadastrar-paciente"
+      method="POST"
+      class="form-cadastro-paciente"
+    >
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="nome_completo">Nome completo</label>
+          <input type="text" id="nome_completo" name="nome_completo" required />
+        </div>
+
+        <div class="form-group">
+          <label for="cpf">CPF</label>
+          <input
+            type="text"
+            id="cpf"
+            name="cpf"
+            inputmode="numeric"
+            maxlength="14"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="data_nascimento">Data de nascimento</label>
+          <input type="date" id="data_nascimento" name="data_nascimento" />
+        </div>
+
+        <div class="form-group">
+          <label for="idade">Idade</label>
+          <input type="number" id="idade" name="idade" min="0" />
+        </div>
+
+        <div class="form-group">
+          <label for="genero">Gênero</label>
+          <select id="genero" name="genero">
+            <option value="">Selecione</option>
+            <option value="Feminino">Feminino</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Outro">Outro</option>
+            <option value="Não informado">Prefere não informar</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="telefone">Telefone</label>
+          <input type="text" id="telefone" name="telefone" />
+        </div>
+
+        <div class="form-group">
+          <label for="cidade">Cidade</label>
+          <input type="text" id="cidade" name="cidade" />
+        </div>
+
+        <div class="form-group">
+          <label for="endereco">Endereço</label>
+          <input type="text" id="endereco" name="endereco" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-health">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const cpfInput = document.getElementById("cpf");
+
+    if (!cpfInput) {
+      return;
+    }
+
+    cpfInput.addEventListener("input", function () {
+      let cpf = cpfInput.value;
+
+      // Remove tudo que não for número
+      cpf = cpf.replace(/\D/g, "");
+
+      // Limita a 11 dígitos
+      cpf = cpf.substring(0, 11);
+
+      // Aplica a máscara 000.000.000-00
+      if (cpf.length > 9) {
+        cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, "$1.$2.$3-$4");
+      } else if (cpf.length > 6) {
+        cpf = cpf.replace(/(\d{3})(\d{3})(\d{1,3})/, "$1.$2.$3");
+      } else if (cpf.length > 3) {
+        cpf = cpf.replace(/(\d{3})(\d{1,3})/, "$1.$2");
+      }
+
+      cpfInput.value = cpf;
+    });
+  });
+</script>
+
+{% endblock %}
